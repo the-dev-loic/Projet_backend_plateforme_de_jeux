@@ -1,0 +1,27 @@
+{
+  "name": "projet_backend_plateforme_de_jeux",
+  "version": "1.0.0",
+  "description": "",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/the-dev-loic/Projet_backend_plateforme_de_jeux.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "bugs": {
+    "url": "https://github.com/the-dev-loic/Projet_backend_plateforme_de_jeux/issues"
+  },
+  "homepage": "https://github.com/the-dev-loic/Projet_backend_plateforme_de_jeux#readme",
+  "dependencies": {
+    "express": "^5.2.1"
+  },
+  "devDependencies": {
+    "nodemon": "^3.1.11"
+  }
+}
