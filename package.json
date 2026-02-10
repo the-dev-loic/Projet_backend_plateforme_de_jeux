@@ -1,7 +1,7 @@
 {
   "name": "projet_backend_plateforme_de_jeux",
   "version": "1.0.0",
-  "description": "",
+  "description": "A video game platform API using CRUD requests on video games, genres, publishers, users and DLCs.",
   "main": "app.js",
   "scripts": {
     "start": "node app.js",
@@ -12,7 +12,7 @@
     "url": "git+https://github.com/the-dev-loic/Projet_backend_plateforme_de_jeux.git"
   },
   "keywords": [],
-  "author": "",
+  "author": "Cédric Jankiewicz, Loïc Roux, Gatien Clerc, Thierry Perroud",
   "license": "ISC",
   "type": "module",
   "bugs": {
