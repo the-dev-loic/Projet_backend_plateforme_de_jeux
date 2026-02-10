@@ -4,7 +4,7 @@
 
 1. **Clone le projet** (ou télécharge-le)
    ```bash
-   
+   git@github.com:the-dev-loic/Projet_backend_plateforme_de_jeux.git
    ```
 
 2. **Installe les dépendances**
