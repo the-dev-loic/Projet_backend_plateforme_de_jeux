@@ -3,72 +3,73 @@
  * Description :            Main app of the API
  * Author :                 Cédric Jankiewicz
  * Creation date :          04.02.2026
- * Modified by :            Gatien Clerc
+ * Modified by :            Loïc Roux
  * Modification date :      11.02.2026
- * Version :                0.1.2
+ * Version :                0.1.3
  **********************************************************************************************************************/
-"use strict;";
-
-/*IMPORT*/
-import express from "express";
+"use strict";
+import express from 'express';
 import swaggerUi from 'swagger-ui-express';
-import swaggerJsdoc from 'swagger-jsdoc';
+import swaggerSpec from "./swagger.js";
+const app = express();
+const port = 3000;
 
-// create variable
-const app = express()
-const port = 3000
-
+//  read JSON
 app.use(express.json());
 
-//route home
-app.get('/', (req, res) => {
-    res.send('Hello World! Bivenue sur mon serveur')
-})
 
-app.get('/api',(req, res) => {
-    res.redirect(`http://localhost:${port}/`)
-})
-
-// Configuring Swagger
-const swaggerOptions = {
-    definition: {
-        openapi: '3.0.0',
-        info: {
-            title: 'API Activités Sportives',
-            version: '1.0.0',
-            description: 'Documentation de notre API pour gérer les activités',
-        },
-        servers: [
-            {
-                url: 'http://localhost:3000',
-                description: 'Serveur de développement',
-            },
-        ],
-    },
-    apis: ['./routes/*.js'],
-};
-
-const swaggerSpec = swaggerJsdoc(swaggerOptions);
-
+// routes swagger
 app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec));
-app.listen(3000, () => {
-    console.log('Serveur démarré sur http://localhost:3000');
-    console.log(' Documentation : http://localhost:3000/api-docs');
+
+// --- Routes de l'API ---
+
+/**
+ * @openapi
+ * /:
+ * get:
+ * summary: Message de bienvenue
+ * responses:
+ * 200:
+ * description: Succès
+ * content:
+ * text/plain:
+ * schema:
+ * type: string
+ * example: "Bienvenue sur l'API !"
+ */
+app.get('/', (req, res) => {
+    res.send('Bienvenue sur l\'API !');
 });
 
-//app.use('/routes/*', routeur);
+/**
+ * @openapi
+ * /users:
+ * get:
+ * summary: Récupère la liste des utilisateurs
+ * responses:
+ * 200:
+ * description: Liste des utilisateurs récupérée
+ * content:
+ * application/json:
+ * schema:
+ * type: array
+ * items:
+ * type: object
+ * properties:
+ * id:
+ * type: integer
+ * nom:
+ * type: string
+ */
+app.get('/users', (req, res) => {
+    res.json([
+        { id: 1, nom: 'Alice' },
+        { id: 2, nom: 'Bob' }
+    ]);
+});
 
-
-app.use((err,req, res, next) => {
-    res.status(404).json({
-        error: "No found",
-        message:"No such route found",
-        status:"error 404"
-    });
-})
-
-
-// Lancement du serveur
+// start server
 app.listen(port, () => {
-    console.log(`the serveur is running on port ${port}`);
+    console.log(`✅ Serveur démarré sur http://localhost:${port}`);
+    console.log(`📖 Documentation disponible sur http://localhost:${port}/api-docs`);
 });
