@@ -9,43 +9,17 @@
  **********************************************************************************************************************/
 "use strict;";
 import express from 'express';
-import swaggerJsdoc from 'swagger-jsdoc';
 import swaggerUi from 'swagger-ui-express';
-
+import swaggerSpec from "./swagger.js";
 const app = express();
 const port = 3000;
 
 //  read JSON
 app.use(express.json());
 
-//  Config  Swagger
-const swaggerOptions = {
-    definition: {
-        openapi: '3.0.0',
-        info: {
-            title: 'Mon API Node.js',
-            version: '1.0.0',
-            description: 'Documentation générée avec Swagger pour mon API Express',
-            contact: {
-                name: 'Développeur',
-            },
-        },
-        servers: [
-            {
-                url: `http://localhost:${port}`,
-                description: 'Serveur de développement',
-            },
-        ],
-    },
-    // read this file
-    apis: ['./server.js'],
-};
-
-// Init swagger-jsdoc
-const swaggerDocs = swaggerJsdoc(swaggerOptions);
 
 // routes swagger
-app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocs));
+app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec));
 
 // --- Routes de l'API ---
 
