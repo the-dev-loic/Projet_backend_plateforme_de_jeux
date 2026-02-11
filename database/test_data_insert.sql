@@ -13,30 +13,30 @@ USE `videogames_platform`;
 -- -----------------------------------------------------
 -- Genres
 -- -----------------------------------------------------
-INSERT INTO Genres (id, name) VALUES
-                                  (1, 'Action'),
-                                  (2, 'Adventure'),
-                                  (3, 'RPG'),
-                                  (4, 'Strategy'),
-                                  (5, 'Simulation'),
-                                  (6, 'Indie');
+INSERT INTO Genres (name) VALUES
+                                  ('Action'),
+                                  ('Adventure'),
+                                  ('RPG'),
+                                  ('Strategy'),
+                                  ('Simulation'),
+                                  ('Indie');
 
 -- -----------------------------------------------------
 -- Publishers
 -- -----------------------------------------------------
-INSERT INTO Publishers (id, username, email, password) VALUES
-                                                           (1, 'EpicForge', 'contact@epicforge.com', 'hashedpass1'),
-                                                           (2, 'PixelWorks', 'support@pixelworks.com', 'hashedpass2'),
-                                                           (3, 'NovaStudios', 'hello@novastudios.com', 'hashedpass3');
+INSERT INTO Publishers (username, email, password) VALUES
+                                                           ('EpicForge', 'contact@epicforge.com', 'hashedpass1'),
+                                                           ('PixelWorks', 'support@pixelworks.com', 'hashedpass2'),
+                                                           ('NovaStudios', 'hello@novastudios.com', 'hashedpass3');
 
 -- -----------------------------------------------------
 -- Users
 -- -----------------------------------------------------
-INSERT INTO Users (id, username, email, password) VALUES
-                                                      (1, 'playerOne', 'player1@mail.com', 'userpass1'),
-                                                      (2, 'gamerGirl', 'gamergirl@mail.com', 'userpass2'),
-                                                      (3, 'noobMaster', 'noob@mail.com', 'userpass3'),
-                                                      (4, 'proSlayer', 'pro@mail.com', 'userpass4');
+INSERT INTO Users (username, email, password) VALUES
+                                                      ('playerOne', 'player1@mail.com', 'userpass1'),
+                                                      ('gamerGirl', 'gamergirl@mail.com', 'userpass2'),
+                                                      ('noobMaster', 'noob@mail.com', 'userpass3'),
+                                                      ('proSlayer', 'pro@mail.com', 'userpass4');
 
 -- -----------------------------------------------------
 -- Games
