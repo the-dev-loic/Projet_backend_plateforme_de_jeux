@@ -4,7 +4,7 @@
  * Author :                 Cédric Jankiewicz
  * Creation date :          11.02.2026
  * Modified by :            -
- * Modification date :      11.02.2026
+ * Modification date :      -
  * Version :                0.1
  **********************************************************************************************************************/
 
@@ -19,20 +19,20 @@ SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0;
 SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION';
 
 -- -----------------------------------------------------
--- Schema videogame_platform
+-- Schema videogames_platform
 -- -----------------------------------------------------
-DROP SCHEMA IF EXISTS `videogame_platform` ;
+DROP SCHEMA IF EXISTS `videogames_platform` ;
 
 -- -----------------------------------------------------
--- Schema videogame_platform
+-- Schema videogames_platform
 -- -----------------------------------------------------
-CREATE SCHEMA IF NOT EXISTS `videogame_platform` DEFAULT CHARACTER SET utf8 ;
-USE `videogame_platform` ;
+CREATE SCHEMA IF NOT EXISTS `videogames_platform` DEFAULT CHARACTER SET utf8 ;
+USE `videogames_platform` ;
 
 -- -----------------------------------------------------
--- Table `videogame_platform`.`Genres`
+-- Table `videogames_platform`.`Genres`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `videogame_platform`.`Genres` (
+CREATE TABLE IF NOT EXISTS `videogames_platform`.`Genres` (
   `id` INT NOT NULL,
   `name` VARCHAR(45) NOT NULL,
   PRIMARY KEY (`id`))
@@ -40,9 +40,9 @@ ENGINE = InnoDB;
 
 
 -- -----------------------------------------------------
--- Table `videogame_platform`.`Publishers`
+-- Table `videogames_platform`.`Publishers`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `videogame_platform`.`Publishers` (
+CREATE TABLE IF NOT EXISTS `videogames_platform`.`Publishers` (
   `id` INT NOT NULL,
   `username` VARCHAR(45) NOT NULL,
   `email` VARCHAR(255) NOT NULL,
@@ -53,9 +53,9 @@ ENGINE = InnoDB;
 
 
 -- -----------------------------------------------------
--- Table `videogame_platform`.`Games`
+-- Table `videogames_platform`.`Games`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `videogame_platform`.`Games` (
+CREATE TABLE IF NOT EXISTS `videogames_platform`.`Games` (
   `id` INT NOT NULL AUTO_INCREMENT,
   `publisher_id` INT NOT NULL,
   `name` VARCHAR(100) NOT NULL,
@@ -65,16 +65,16 @@ CREATE TABLE IF NOT EXISTS `videogame_platform`.`Games` (
   INDEX `fk_Games_Editor1_idx` (`publisher_id` ASC) VISIBLE,
   CONSTRAINT `fk_Games_Editor1`
     FOREIGN KEY (`publisher_id`)
-    REFERENCES `videogame_platform`.`Publishers` (`id`)
+    REFERENCES `videogames_platform`.`Publishers` (`id`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
 ENGINE = InnoDB;
 
 
 -- -----------------------------------------------------
--- Table `videogame_platform`.`DLCs`
+-- Table `videogames_platform`.`DLCs`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `videogame_platform`.`DLCs` (
+CREATE TABLE IF NOT EXISTS `videogames_platform`.`DLCs` (
   `id` INT NOT NULL AUTO_INCREMENT,
   `game_id` INT NOT NULL,
   `name` VARCHAR(100) NOT NULL,
@@ -84,16 +84,16 @@ CREATE TABLE IF NOT EXISTS `videogame_platform`.`DLCs` (
   INDEX `fk_DLC_Games_idx` (`game_id` ASC) VISIBLE,
   CONSTRAINT `fk_DLC_Games`
     FOREIGN KEY (`game_id`)
-    REFERENCES `videogame_platform`.`Games` (`id`)
+    REFERENCES `videogames_platform`.`Games` (`id`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
 ENGINE = InnoDB;
 
 
 -- -----------------------------------------------------
--- Table `videogame_platform`.`Users`
+-- Table `videogames_platform`.`Users`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `videogame_platform`.`Users` (
+CREATE TABLE IF NOT EXISTS `videogames_platform`.`Users` (
   `id` INT NOT NULL,
   `username` VARCHAR(45) NOT NULL,
   `email` VARCHAR(255) NOT NULL,
@@ -104,9 +104,9 @@ ENGINE = InnoDB;
 
 
 -- -----------------------------------------------------
--- Table `videogame_platform`.`Games_has_Genres`
+-- Table `videogames_platform`.`Games_has_Genres`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `videogame_platform`.`Games_has_Genres` (
+CREATE TABLE IF NOT EXISTS `videogames_platform`.`Games_has_Genres` (
   `id` INT NOT NULL AUTO_INCREMENT,
   `game_id` INT NOT NULL,
   `genre_id` INT NOT NULL,
@@ -115,21 +115,21 @@ CREATE TABLE IF NOT EXISTS `videogame_platform`.`Games_has_Genres` (
   INDEX `fk_Games_has_Genres_Genres1_idx` (`genre_id` ASC) VISIBLE,
   CONSTRAINT `fk_Games_has_Genres_Games1`
     FOREIGN KEY (`game_id`)
-    REFERENCES `videogame_platform`.`Games` (`id`)
+    REFERENCES `videogames_platform`.`Games` (`id`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION,
   CONSTRAINT `fk_Games_has_Genres_Genres1`
     FOREIGN KEY (`genre_id`)
-    REFERENCES `videogame_platform`.`Genres` (`id`)
+    REFERENCES `videogames_platform`.`Genres` (`id`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
 ENGINE = InnoDB;
 
 
 -- -----------------------------------------------------
--- Table `videogame_platform`.`Users_has_Games`
+-- Table `videogames_platform`.`Users_has_Games`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `videogame_platform`.`Users_has_Games` (
+CREATE TABLE IF NOT EXISTS `videogames_platform`.`Users_has_Games` (
   `id` INT NOT NULL AUTO_INCREMENT,
   `user_id` INT NOT NULL,
   `game_id` INT NOT NULL,
@@ -138,21 +138,21 @@ CREATE TABLE IF NOT EXISTS `videogame_platform`.`Users_has_Games` (
   INDEX `fk_Users_has_Games_Games1_idx` (`game_id` ASC) VISIBLE,
   CONSTRAINT `fk_Users_has_Games_Users1`
     FOREIGN KEY (`user_id`)
-    REFERENCES `videogame_platform`.`Users` (`id`)
+    REFERENCES `videogames_platform`.`Users` (`id`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION,
   CONSTRAINT `fk_Users_has_Games_Games1`
     FOREIGN KEY (`game_id`)
-    REFERENCES `videogame_platform`.`Games` (`id`)
+    REFERENCES `videogames_platform`.`Games` (`id`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
 ENGINE = InnoDB;
 
 
 -- -----------------------------------------------------
--- Table `videogame_platform`.`Users_has_DLCs`
+-- Table `videogames_platform`.`Users_has_DLCs`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `videogame_platform`.`Users_has_DLCs` (
+CREATE TABLE IF NOT EXISTS `videogames_platform`.`Users_has_DLCs` (
   `id` INT NOT NULL AUTO_INCREMENT,
   `user_id` INT NOT NULL,
   `DLC_id` INT NOT NULL,
@@ -161,12 +161,12 @@ CREATE TABLE IF NOT EXISTS `videogame_platform`.`Users_has_DLCs` (
   INDEX `fk_Users_has_DLC_Users1_idx` (`user_id` ASC) VISIBLE,
   CONSTRAINT `fk_Users_has_DLC_DLC1`
     FOREIGN KEY (`DLC_id`)
-    REFERENCES `videogame_platform`.`DLCs` (`id`)
+    REFERENCES `videogames_platform`.`DLCs` (`id`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION,
   CONSTRAINT `fk_Users_has_DLC_Users1`
     FOREIGN KEY (`user_id`)
-    REFERENCES `videogame_platform`.`Users` (`id`)
+    REFERENCES `videogames_platform`.`Users` (`id`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
 ENGINE = InnoDB;

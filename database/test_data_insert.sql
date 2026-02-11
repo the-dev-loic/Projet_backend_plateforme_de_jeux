@@ -4,11 +4,11 @@
  * Author :                 Cédric Jankiewicz
  * Creation date :          11.02.2026
  * Modified by :            -
- * Modification date :      11.02.2026
+ * Modification date :      -
  * Version :                0.1
  **********************************************************************************************************************/
 
-USE `videogame_platform`;
+USE `videogames_platform`;
 
 -- -----------------------------------------------------
 -- Genres
