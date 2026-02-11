@@ -1,13 +1,13 @@
 /***********************************************************************************************************************
  * Program name :           app.js
  * Description :            Main app of the API
- * Author :                 Cédric Jankwevitch
+ * Author :                 Cédric Jankiewicz
  * Creation date :          04.02.2026
- * Modified by :            Loïc
+ * Modified by :            Loïc Roux
  * Modification date :      11.02.2026
  * Version :                0.1.3
  **********************************************************************************************************************/
-"use strict;";
+"use strict";
 import express from 'express';
 import swaggerUi from 'swagger-ui-express';
 import swaggerSpec from "./swagger.js";
