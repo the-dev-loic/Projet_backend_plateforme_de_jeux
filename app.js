@@ -10,6 +10,7 @@
 "use strict";
 
 import express from 'express';
+import genresRouter from "./routes/genres.js";
 import swaggerUi from 'swagger-ui-express';
 import swaggerSpec from "./swagger.js";
 const app = express();
@@ -28,7 +29,7 @@ app.get('/', (req, res) => {
 });
 
 // router
-//app.use('/api/Users', usersRouter);
+app.use('/api/genres', genresRouter);
 
 // start the server
 app.listen(port, () => {
