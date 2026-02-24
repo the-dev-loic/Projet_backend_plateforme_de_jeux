@@ -20,7 +20,7 @@ import mysql2 from "mysql2/promise";
 // MySQL connection instance to the database
 const connection = await mysql2.createConnection({
     host:       "localhost",
-    user:       "API",                     // Needs to be configured
+    user:       "ProgBack_API",                     // Needs to be configured
     password:   "1234",                     // Needs to be configured
     port:       3306,
     database:   "videogames_platform"
