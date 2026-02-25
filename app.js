@@ -11,9 +11,9 @@
 
 import express from 'express';
 import genresRouter from "./routes/genres.js";
+import usersRouter from "./routes/users.js";
 import swaggerUi from 'swagger-ui-express';
 import swaggerSpec from "./swagger.js";
-import usersRouter from "./routes/users.js";
 const app = express();
 const port = 3000;
 
