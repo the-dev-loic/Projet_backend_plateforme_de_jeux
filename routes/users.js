@@ -37,7 +37,7 @@ const router = express.Router();
  *         example: 10
  *     responses:
  *       200:
- *         description: Successfully retrieved genres
+ *         description: Successfully retrieved users
  *       400:
  *         description: Bad request
  *       404:
@@ -68,7 +68,7 @@ const router = express.Router();
  *                 example: Pa$$$w0rd
  *     responses:
  *       200:
- *         description: genre created successfully
+ *         description: users created successfully
  *       400:
  *         description: Bad request
  *       500:
@@ -158,40 +158,61 @@ const router = express.Router();
  */
 
 router.get('/', async (req, res) => {
-    const searchName = req.query.name;
-    const limit = req.query.limit;
+    const searchName = req.query.name; // get param 'name'
+    const limit = req.query.limit; // get param 'limit'
+    if (!(parseInt(limit) > 0) && limit) {
+        res.status(400).json({error: "limit invalid number"});
+        return;
+    }
     let users = await CRUD.getAllFromEntity('users', 'username', searchName, limit);
-    console.log(users);
-
-    res.json(users);
-});
-
+    res.status(200).json(users)
+})
 
 router.get('/:id', async (req, res) => {
     const id = parseInt(req.params.id);
+    if (!(id > 0)) {
+        res.status(400).json({error: "id should be a positive integer"});
+        return;
+    }
     let users = await CRUD.getFromEntityById("users", id);
-    res.json(users);
-});
+    res.status(200).json(users)
+})
 
 router.post('/', async (req, res) => {
     res.json(req.body);
     const data = Object.values(req.body);
+    if (data[0] === "" || !data[0] || data[0].length > 45) {
+        res.status(400).json({error: "invalid name, name need to be under 45 characters"});
+        return;
+    }
     let response = await CRUD.createInEntity("users", ['username', 'email', 'password'], data);
-    res.json(response);
-});
+    res.status(200).json(response)
+})
 
 router.put('/:id', async (req, res) => {
     res.json(req.body);
     const data = Object.values(req.body);
+    if (data[0] === "" || data[0].length > 45) {
+        res.status(400).json({error: "invalid name, name need to be under 45 characters"});
+        return;
+    }
     const id = parseInt(req.params.id);
-    let response = await CRUD.updateInEntity("users", id, ['username', 'email', 'password'], data);
-    res.json(response);
+    if (!(id > 0)) {
+        res.status(400).json({error: "id should be a positive integer"});
+        return;
+    }
+    let response = await CRUD.updateInEntity("users", id,['username', 'email', 'password'], data)
+    res.status(200).json(response)
 })
 
 router.delete('/:id', async (req, res) => {
     const id = parseInt(req.params.id);
-    let response = await CRUD.deleteFromEntity("users", id);
-    res.json(response);
-});
+    if (!(id > 0)) {
+        res.status(400).json({error: "id should be a positive integer"});
+        return;
+    }
+    let response = await CRUD.deleteFromEntity("users", id)
+    res.status(200).json(response)
+})
 
 export default router;
