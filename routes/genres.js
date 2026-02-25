@@ -3,8 +3,8 @@
  * Description :            route for genres table
  * Author :                 Cédric Jankiewicz
  * Creation date :          24.02.2026
- * Modified by :            -
- * Modification date :      -
+ * Modified by :            Cédric Jankiewicz
+ * Modification date :      25.02.2026
  * Version :                0.1.0
  **********************************************************************************************************************/
 import express from 'express';
@@ -17,6 +17,22 @@ import { CRUD } from "../database/database-connection.js";
  *   get:
  *     summary: Get all genres
  *     description: Retrieve a list of genres.
+ *     parameters:
+ *       - in: query
+ *         name: name
+ *         required: false
+ *         schema:
+ *           type: string
+ *         description: Search activities by name
+ *         example: Indie
+ *       - in: query
+ *         name: limit
+ *         required: false
+ *         schema:
+ *           type: integer
+ *           minimum: 1
+ *         description: Number of results to return
+ *         example: 10
  *     responses:
  *       200:
  *         description: Successfully retrieved genres
@@ -43,7 +59,7 @@ import { CRUD } from "../database/database-connection.js";
  *                 type: string
  *                 example: rpg
  *     responses:
- *       201:
+ *       200:
  *         description: genre created successfully
  *       400:
  *         description: Bad request
@@ -128,35 +144,61 @@ import { CRUD } from "../database/database-connection.js";
  */
 
 router.get('/', async (req, res) => {
-    let genres = await CRUD.getAllFromEntity("genres")
-    res.json(genres)
+    const searchName = req.query.name; // get param 'name'
+    const limit = req.query.limit; // get param 'limit'
+    if (!(parseInt(limit) > 0) && limit) {
+        res.status(400).json({error: "limit invalid number"});
+        return;
+    }
+    let genres = await CRUD.getAllFromEntity("genres", "name", searchName, limit);
+    res.status(200).json(genres)
 })
 
 router.get('/:id', async (req, res) => {
     const id = parseInt(req.params.id);
+    if (!(id > 0)) {
+        res.status(400).json({error: "id should be a positive integer"});
+        return;
+    }
     let genres = await CRUD.getFromEntityById("genres", id);
-    res.json(genres)
+    res.status(200).json(genres)
 })
 
 router.post('/', async (req, res) => {
     res.json(req.body);
     const data = Object.values(req.body);
+    if (data[0] === "" || !data[0] || data[0].length > 45) {
+        res.status(400).json({error: "invalid name, name need to be under 45 characters"});
+        return;
+    }
     let response = await CRUD.createInEntity("genres", ['name'], data);
-    res.json(response)
+    res.status(200).json(response)
 })
 
 router.put('/:id', async (req, res) => {
     res.json(req.body);
     const data = Object.values(req.body);
+    if (data[0] === "" || data[0].length > 45) {
+        res.status(400).json({error: "invalid name, name need to be under 45 characters"});
+        return;
+    }
     const id = parseInt(req.params.id);
+    if (!(id > 0)) {
+        res.status(400).json({error: "id should be a positive integer"});
+        return;
+    }
     let response = await CRUD.updateInEntity("genres", id, ['name'], data)
-    res.json(response)
+    res.status(200).json(response)
 })
 
 router.delete('/:id', async (req, res) => {
     const id = parseInt(req.params.id);
+    if (!(id > 0)) {
+        res.status(400).json({error: "id should be a positive integer"});
+        return;
+    }
     let response = await CRUD.deleteFromEntity("genres", id)
-    res.json(response)
+    res.status(200).json(response)
 })
 
 export default router;
