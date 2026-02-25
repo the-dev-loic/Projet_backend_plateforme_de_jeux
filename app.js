@@ -10,11 +10,12 @@
 "use strict";
 
 import express from 'express';
+import users_has_GamesRouteur from "./routes/Users_has_Games.js";
 import swaggerUi from 'swagger-ui-express';
 import swaggerSpec from "./swagger.js";
 const app = express();
 const port = 3000;
-import genresRouter from "./routes/Users_has_Games.js";
+
 
 // read JSON
 app.use(express.json());
@@ -29,7 +30,7 @@ app.get('/', (req, res) => {
 });
 
 // router
-app.use('/api/Users_has_Games', genresRouter);
+app.use('/api/Users_has_Games', users_has_GamesRouteur);
 
 // start the server
 app.listen(port, () => {
