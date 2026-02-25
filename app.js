@@ -4,7 +4,7 @@
  * Author :                 Cédric Jankiewicz
  * Creation date :          04.02.2026
  * Modified by :            Loïc Roux
- * Modification date :      11.02.2026
+ * Modification date :      25.02.2026
  * Version :                0.1.3
  **********************************************************************************************************************/
 "use strict";
@@ -14,6 +14,7 @@ import swaggerUi from 'swagger-ui-express';
 import swaggerSpec from "./swagger.js";
 const app = express();
 const port = 3000;
+import genresRouter from "./routes/Users_has_Games.js";
 
 // read JSON
 app.use(express.json());
@@ -28,7 +29,7 @@ app.get('/', (req, res) => {
 });
 
 // router
-//app.use('/api/Users', usersRouter);
+app.use('/api/Users_has_Games', genresRouter);
 
 // start the server
 app.listen(port, () => {
