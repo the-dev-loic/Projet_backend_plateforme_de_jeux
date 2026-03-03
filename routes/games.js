@@ -3,9 +3,9 @@
  * Description :            router for the games CRUD routes
  * Author :                 Thierry Perroud
  * Creation date :          25.02.2026
- * Modified by :
- * Modification date :
- * Version :                0.1.0
+ * Modified by :            Thierry Perroud
+ * Modification date :      03.03.2026
+ * Version :                0.1.1
  **********************************************************************************************************************/
 "use strict";
 
@@ -25,6 +25,8 @@ const gamesRouter = express.Router();  // Router for http://localhost:3000/api/G
  * @swagger
  * /api/games:
  *   post:
+ *     tags:
+ *       - Games
  *     summary: Crée un jeu
  *     description: Crée un nouveau jeu dans la base de données
  *     parameters:
@@ -71,7 +73,7 @@ const gamesRouter = express.Router();  // Router for http://localhost:3000/api/G
  *                 price:
  *                   type: number
  *       400:
- *         description: Un ou plusieurs paramètres indispensables sont vides. | L'id de l'éditeur doit être un nombre entier positif. | Le nom du jeu ne peut pas dépasser 100 caractères. | la description du jeu ne doit pas dépasser les 255 caractères. | Le prix du jeu doit être un nombre positif.
+ *         description: Un ou plusieurs paramètres indispensables sont vides. | L'id de l'éditeur doit être un nombre entier positif. | Le nom du jeu ne peut pas dépasser 100 caractères. | la description du jeu ne doit pas dépasser les 255 caractères. | Le prix du jeu doit être un nombre positif ou zéro.
  */
 gamesRouter.post("/", async (req, res) => {
     try {
@@ -81,7 +83,7 @@ gamesRouter.post("/", async (req, res) => {
         const data = [publisher_id, name, description, price];
 
         // Error handling
-        if (!publisher_id || !name || ! price) {
+        if (publisher_id == null || !name == null || price == null) {
             return res.status(400).json({error: "Un ou plusieurs paramètres indispensables sont vides."});
         }
 
@@ -95,11 +97,11 @@ gamesRouter.post("/", async (req, res) => {
 
         if (description.length > 255) {
             return res.status(400).json({error: "La description du jeu ne peut pas dépasser 255 " +
-                                                            "caractères."});
+                    "caractères."});
         }
 
-        if (isNaN(price) || price <= 0) {
-            return res.status(400).json({error: "Le prix du jeu doit être un nombre positif."})
+        if (isNaN(price) || price < 0) {
+            return res.status(400).json({error: "Le prix du jeu doit être un nombre positif ou zéro."})
         }
 
         //  Creating the entry
@@ -116,6 +118,8 @@ gamesRouter.post("/", async (req, res) => {
  * @swagger
  * /api/games:
  *   get:
+ *     tags:
+ *       - Games
  *     summary: Récupère tous les jeux
  *     description: Retourne la liste des jeux avec possibilité de filtrage et de limite
  *     parameters:
@@ -173,6 +177,8 @@ gamesRouter.get("/", async (req, res) => {
  * @swagger
  * /api/games/{id}:
  *   get:
+ *     tags:
+ *       - Games
  *     summary: Récupère un jeu avec un id
  *     description: Retourne un jeu à partir de son id
  *     parameters:
@@ -233,6 +239,8 @@ gamesRouter.get("/:id", async (req, res) => {
  * @swagger
  * /api/games/{id}:
  *   put:
+ *     tags:
+ *       - Games
  *     summary: Met à jour un jeu
  *     description: Met à jour un jeu en fonction de son id
  *     parameters:
@@ -285,7 +293,7 @@ gamesRouter.get("/:id", async (req, res) => {
  *                 price:
  *                   type: number
  *       400:
- *         description: Un ou plusieurs paramètres indispensables sont vides. | L'id de l'éditeur doit être un nombre entier positif. | Le nom du jeu ne peut pas dépasser 100 caractères. | la description du jeu ne doit pas dépasser les 255 caractères. | Le prix du jeu doit être un nombre positif.
+ *         description: Un ou plusieurs paramètres indispensables sont vides. | L'id de l'éditeur doit être un nombre entier positif. | Le nom du jeu ne peut pas dépasser 100 caractères. | la description du jeu ne doit pas dépasser les 255 caractères. | Le prix du jeu doit être un nombre positif ou zéro.
  */
 gamesRouter.put("/:id", async (req, res) => {
     try {
@@ -300,7 +308,7 @@ gamesRouter.put("/:id", async (req, res) => {
         const data = [publisher_id, name, description, price];
 
         // Error handling
-        if (!publisher_id || !name || ! price) {
+        if (publisher_id == null || !name == null || price == null) {
             return res.status(400).json({error: "Un ou plusieurs paramètres indispensables sont vides."});
         }
 
@@ -314,11 +322,11 @@ gamesRouter.put("/:id", async (req, res) => {
 
         if (description.length > 255) {
             return res.status(400).json({error: "La description du jeu ne peut pas dépasser 255 " +
-                                                            "caractères."});
+                    "caractères."});
         }
 
         if (isNaN(price) || price <= 0) {
-            return res.status(400).json({error: "Le prix du jeu doit être un nombre positif."})
+            return res.status(400).json({error: "Le prix du jeu doit être un nombre positif ou zéro."})
         }
 
         // Updating the entry
@@ -335,6 +343,8 @@ gamesRouter.put("/:id", async (req, res) => {
  * @swagger
  * /api/games/{id}:
  *   delete:
+ *     tags:
+ *       - Games
  *     summary: Supprime un jeu
  *     description: Supprime un jeu de la base de données en fonction de son id
  *     parameters:
