@@ -1,11 +1,11 @@
 /***********************************************************************************************************************
- * Program name :           games.js
- * Description :            router for the games CRUD routes
+ * Program name :           dlcs.js
+ * Description :            router for the DLCs CRUD routes
  * Author :                 Thierry Perroud
- * Creation date :          25.02.2026
- * Modified by :            Thierry Perroud
- * Modification date :      03.03.2026
- * Version :                0.1.1
+ * Creation date :          04.03.2026
+ * Modified by :
+ * Modification date :
+ * Version :                0.1.0
  **********************************************************************************************************************/
 "use strict";
 
@@ -18,45 +18,46 @@ import { CRUD } from "../database/database-connection.js";
 /***********************************************************************************************************************
  *  Routes
  **********************************************************************************************************************/
-const gamesRouter = express.Router();  // Router for http://localhost:3000/api/Games
+const dlcsRouter = express.Router();  // Router for http://localhost:3000/api/dlcs
 
 /* Create *************************************************************************************************************/
 /**
  * @swagger
- * /api/games:
+ * /api/dlcs:
  *   post:
  *     tags:
- *       - Games
- *     summary: Crée un jeu
- *     description: Crée un nouveau jeu dans la base de données
+ *       - DLCs
+ *     summary: Creates a DLC
+ *     description: Creates a new DLC into the database
  *     parameters:
- *       - in: query
- *         name: publisher_id
+ *       - in: body
+ *         name: game_id
  *         schema:
  *           type: integer
  *           minimum: 1
- *         description: L'id de l'éditeur du nouveau jeu
- *       - in: query
+ *         description: The id of the game that has the DLC
+ *       - in: body
  *         name: name
  *         schema:
  *           type: string
  *           maxLength: 100
- *         description: Le nom du nouveau jeu (max 100 caractères)
- *       - in: query
+ *         description: The name of the new DLC (max 100 characters)
+ *       - in: body
  *         name: description
  *         schema:
  *           type: string
  *           nullable: true
  *           maxLength: 255
- *         description: La description du nouveau jeu (peut être vide, max 255 caractères)
- *       - in: query
+ *         description: The description of the new DLC (can be null, max 255 characters)
+ *       - in: body
  *         name: price
  *         schema:
  *           type: number
- *         description: Le prix du nouveau jeu
+ *           minimum: 0
+ *         description: The price of the new DLC (min 0, in which case it is free)
  *     responses:
  *       201:
- *         description: La nouvelle activité a été crée
+ *         description: The new DLC was created
  *         content:
  *           application/json:
  *             schema:
@@ -64,7 +65,7 @@ const gamesRouter = express.Router();  // Router for http://localhost:3000/api/G
  *               properties:
  *                 id:
  *                   type: integer
- *                 publisher_id:
+ *                 game_id:
  *                   type: integer
  *                 name:
  *                   type: string
@@ -73,40 +74,42 @@ const gamesRouter = express.Router();  // Router for http://localhost:3000/api/G
  *                 price:
  *                   type: number
  *       400:
- *         description: Un ou plusieurs paramètres indispensables sont vides. | L'id de l'éditeur doit être un nombre entier positif. | Le nom du jeu ne peut pas dépasser 100 caractères. | la description du jeu ne doit pas dépasser les 255 caractères. | Le prix du jeu doit être un nombre positif ou zéro.
+ *         description: At least one mandatory parameter is empty. | The id of the game must be a positive integer. | The name of the DLC cannot be longer than 100 characters. | The description of the DLC cannot be longer than 255 characters. | The price of the DLC must be a positive number, or zero.
+ *       500:
+ *         description: Internal server error.
  */
-gamesRouter.post("/", async (req, res) => {
+dlcsRouter.post("/", async (req, res) => {
     try {
         // Variables
-        const columns = ["publisher_id", "name", "description", "price"];
-        const {publisher_id, name, description, price} = req.body;
-        const data = [publisher_id, name, description, price];
+        const columns = ["game_id", "name", "description", "price"];
+        const {game_id, name, description, price} = req.body;
+        const data = [game_id, name, description, price];
 
         // Error handling
-        if (publisher_id == null || name == null || price == null) {
-            return res.status(400).json({error: "Un ou plusieurs paramètres indispensables sont vides."});
+        if (game_id == null || name == null || price == null) {
+            return res.status(400).json({error: "At least one mandatory parameter is empty."});
         }
 
-        if (isNaN(publisher_id) || publisher_id < 1) {
-            return res.status(400).json({error: "L'id de l'éditeur doit être un nombre entier positif."});
+        if (isNaN(game_id) || game_id < 1) {
+            return res.status(400).json({error: "The id of the game must be a positive integer."});
         }
 
         if (name.length > 100) {
-            return res.status(400).json({error: "Le nom du jeu ne peut pas dépasser 100 caractères."});
+            return res.status(400).json({error: "The name of the DLC cannot be longer than 100 characters."});
         }
 
         if (description.length > 255) {
-            return res.status(400).json({error: "La description du jeu ne peut pas dépasser 255 " +
-                    "caractères."});
+            return res.status(400).json({error: "The description of the DLC cannot be longer than 255 " +
+                    "characters."});
         }
 
         if (isNaN(price) || price < 0) {
-            return res.status(400).json({error: "Le prix du jeu doit être un nombre positif ou zéro."})
+            return res.status(400).json({error: "The price of the DLC must be a positive number, or zero."})
         }
 
         //  Creating the entry
-        const newGame = await CRUD.createInEntity("games", columns, data);
-        res.status(201).json(newGame);
+        const newDlc = await CRUD.createInEntity("dlcs", columns, data);
+        res.status(201).json(newDlc);
     }
     catch (error) {
         res.status(500).json({error: error.message});
@@ -116,31 +119,31 @@ gamesRouter.post("/", async (req, res) => {
 /* Read ***************************************************************************************************************/
 /**
  * @swagger
- * /api/games:
+ * /api/dlcs:
  *   get:
  *     tags:
- *       - Games
- *     summary: Récupère tous les jeux
- *     description: Retourne la liste des jeux avec possibilité de filtrage et de limite
+ *       - DLCs
+ *     summary: Returns all DLCs
+ *     description: Returns a list of all DLCs with the ability of filtering or limiting the data
  *     parameters:
  *       - in: query
  *         name: column
  *         schema:
  *           type: string
- *         description: La colonne à filtrer (optionnel, a besoin du filtre)
+ *         description: The column to filter (optional, requires a filter)
  *       - in: query
  *         name: filter
  *         schema:
  *           type: string
- *         description: Le filtrage à appliquer à la colonne (optionnel, a besoin de la colonne)
+ *         description: The filter to apply to the column (optional, requires a column)
  *       - in: query
  *         name: limit
  *         schema:
  *           type: integer
- *         description: Nombre maximum de résultats (optionnel)
+ *         description: Maximum number of results (optional)
  *     responses:
  *       200:
- *         description: Liste des activités
+ *         description: List of all DLCs
  *         content:
  *           application/json:
  *             schema:
@@ -148,7 +151,7 @@ gamesRouter.post("/", async (req, res) => {
  *               properties:
  *                 id:
  *                   type: integer
- *                 publisher_id:
+ *                 game_id:
  *                   type: integer
  *                 name:
  *                   type: string
@@ -156,8 +159,10 @@ gamesRouter.post("/", async (req, res) => {
  *                   type: string
  *                 price:
  *                   type: number
+ *       500:
+ *         description: Internal server error.
  */
-gamesRouter.get("/", async (req, res) => {
+dlcsRouter.get("/", async (req, res) => {
     try {
         // Variables
         const column = req.query.column;
@@ -165,8 +170,8 @@ gamesRouter.get("/", async (req, res) => {
         const limit = parseInt(req.query.limit);
 
         // Reading the entries
-        const allGames = await CRUD.getAllFromEntity("games", column, filter, limit);
-        res.status(200).json(allGames);
+        const allDlcs = await CRUD.getAllFromEntity("dlcs", column, filter, limit);
+        res.status(200).json(allDlcs);
     }
     catch (error) {
         res.status(500).json({error: error.message});
@@ -175,22 +180,22 @@ gamesRouter.get("/", async (req, res) => {
 
 /**
  * @swagger
- * /api/games/{id}:
+ * /api/dlcs/{id}:
  *   get:
  *     tags:
- *       - Games
- *     summary: Récupère un jeu avec un id
- *     description: Retourne un jeu à partir de son id
+ *       - DLCs
+ *     summary: Gets a DLC with an id
+ *     description: Returns a DLC from its id
  *     parameters:
  *       - in: path
  *         name: id
  *         schema:
  *           type: integer
  *           minimum: 1
- *         description: L'id du jeu
+ *         description: The id of the DLC
  *     responses:
- *       201:
- *         description: Jeu retourné
+ *       200:
+ *         description: Returned DLC
  *         content:
  *           application/json:
  *             schema:
@@ -198,7 +203,7 @@ gamesRouter.get("/", async (req, res) => {
  *               properties:
  *                 id:
  *                   type: integer
- *                 publisher_id:
+ *                 game_id:
  *                   type: integer
  *                 name:
  *                   type: string
@@ -207,27 +212,29 @@ gamesRouter.get("/", async (req, res) => {
  *                 price:
  *                   type: number
  *       400:
- *         description: L'id doit être un nombre entier positif.
+ *         description: The id must be a positive integer.
  *       404:
- *         description: Jeu non trouvé.
+ *         description: DLC not found.
+ *       500:
+ *         description: Internal server error.
  */
-gamesRouter.get("/:id", async (req, res) => {
+dlcsRouter.get("/:id", async (req, res) => {
     try {
         // Handling errors with the id parameter
         if (isNaN(req.params.id) || req.params.id < 1) {
-            return res.status(400).json({error: "L'id doit être un nombre entier positif."})
+            return res.status(400).json({error: "The id must be a positive integer."})
         }
 
         // Reading the entry
-        const game = await CRUD.getFromEntityById("games", req.params.id);
+        const dlc = await CRUD.getFromEntityById("dlcs", req.params.id);
 
         // Error handling
-        if (!game) {
-            return res.status(404).json({error: "Jeu non trouvé."});
+        if (!dlc) {
+            return res.status(404).json({error: "DLC not found."});
         }
 
         // sending the entry to user
-        res.status(200).json(game);
+        res.status(200).json(dlc);
     }
     catch (error) {
         res.status(500).json({error: error.message});
@@ -237,46 +244,46 @@ gamesRouter.get("/:id", async (req, res) => {
 /* Update *************************************************************************************************************/
 /**
  * @swagger
- * /api/games/{id}:
+ * /api/dlcs/{id}:
  *   put:
  *     tags:
- *       - Games
- *     summary: Met à jour un jeu
- *     description: Met à jour un jeu en fonction de son id
+ *       - DLCs
+ *     summary: Updates a DLC
+ *     description: Updates a DLC from its id
  *     parameters:
  *       - in: path
  *         name: id
  *         schema:
  *           type: integer
  *           minimum: 1
- *         description: L'id du jeu à modifier
- *       - in: query
- *         name: publisher_id
+ *         description: The id of the DLC to update
+ *       - in: body
+ *         name: game_id
  *         schema:
  *           type: integer
  *           minimum: 1
- *         description: Le nouvel id de l'éditeur du jeu
- *       - in: query
+ *         description: The new game that has the DLC
+ *       - in: body
  *         name: name
  *         schema:
  *           type: string
  *           maxLength: 100
- *         description: Le nouveau nom du jeu (max 100 caractères)
- *       - in: query
+ *         description: The new DLC's name (max 100 characters)
+ *       - in: body
  *         name: description
  *         schema:
  *           type: string
  *           nullable: true
  *           maxLength: 255
- *         description: La nouvelle description du jeu (peut être vide, max 255 caractères)
- *       - in: query
+ *         description: The new description of the DLC (can be null, max 255 characters)
+ *       - in: body
  *         name: price
  *         schema:
  *           type: number
- *         description: Le nouveau prix du jeu
+ *         description: The new price of the DLC
  *     responses:
  *       200:
- *         description: Le jeu mis à jour
+ *         description: DLC updated
  *         content:
  *           application/json:
  *             schema:
@@ -284,7 +291,7 @@ gamesRouter.get("/:id", async (req, res) => {
  *               properties:
  *                 id:
  *                   type: integer
- *                 publisher_id:
+ *                 game_id:
  *                   type: integer
  *                 name:
  *                   type: string
@@ -293,45 +300,47 @@ gamesRouter.get("/:id", async (req, res) => {
  *                 price:
  *                   type: number
  *       400:
- *         description: Un ou plusieurs paramètres indispensables sont vides. | L'id de l'éditeur doit être un nombre entier positif. | Le nom du jeu ne peut pas dépasser 100 caractères. | la description du jeu ne doit pas dépasser les 255 caractères. | Le prix du jeu doit être un nombre positif ou zéro.
+ *         description: The id must be a positive integer. | At least one mandatory parameter is empty. | The id of the game must be a positive integer. | The name of the DLC cannot be longer than 100 characters. | The description of the DLC cannot be longer than 255 characters. | The price of the DLC must be a positive number, or zero.
+ *       500:
+ *         description: Internal server error.
  */
-gamesRouter.put("/:id", async (req, res) => {
+dlcsRouter.put("/:id", async (req, res) => {
     try {
         // Handling errors with the id parameter
         if (isNaN(req.params.id) || req.params.id < 1) {
-            return res.status(400).json({error: "L'id doit être un nombre entier positif."});
+            return res.status(400).json({error: "The id must be a positive integer."});
         }
 
         // Variables
-        const columns = ["publisher_id", "name", "description", "price"];
-        const {publisher_id, name, description, price} = req.body;
-        const data = [publisher_id, name, description, price];
+        const columns = ["game_id", "name", "description", "price"];
+        const {game_id, name, description, price} = req.body;
+        const data = [game_id, name, description, price];
 
         // Error handling
-        if (publisher_id == null || name == null || price == null) {
-            return res.status(400).json({error: "Un ou plusieurs paramètres indispensables sont vides."});
+        if (game_id == null || name == null || price == null) {
+            return res.status(400).json({error: "At least one mandatory parameter is empty."});
         }
 
-        if (isNaN(publisher_id) || publisher_id < 1) {
-            return res.status(400).json({error: "L'id de l'éditeur doit être un nombre entier positif."});
+        if (isNaN(game_id) || game_id < 1) {
+            return res.status(400).json({error: "The id of the game must be a positive integer."});
         }
 
         if (name.length > 100) {
-            return res.status(400).json({error: "Le nom du jeu ne peut pas dépasser 100 caractères."});
+            return res.status(400).json({error: "The name of the DLC cannot be longer than 100 characters."});
         }
 
         if (description.length > 255) {
-            return res.status(400).json({error: "La description du jeu ne peut pas dépasser 255 " +
-                    "caractères."});
+            return res.status(400).json({error: "The description of the DLC cannot be longer than 255 " +
+                    "characters."});
         }
 
-        if (isNaN(price) || price <= 0) {
-            return res.status(400).json({error: "Le prix du jeu doit être un nombre positif ou zéro."})
+        if (isNaN(price) || price < 0) {
+            return res.status(400).json({error: "The price of the DLC must be a positive number, or zero."})
         }
 
         // Updating the entry
-        const updatedGame = await CRUD.updateInEntity("games", req.params.id, columns, data);
-        res.status(200).json(updatedGame);
+        const updatedDlc = await CRUD.updateInEntity("dlcs", req.params.id, columns, data);
+        res.status(200).json(updatedDlc);
     }
     catch (error) {
         res.status(500).json({error: error.message});
@@ -341,35 +350,35 @@ gamesRouter.put("/:id", async (req, res) => {
 /* Delete *************************************************************************************************************/
 /**
  * @swagger
- * /api/games/{id}:
+ * /api/dlcs/{id}:
  *   delete:
  *     tags:
- *       - Games
- *     summary: Supprime un jeu
- *     description: Supprime un jeu de la base de données en fonction de son id
+ *       - DLCs
+ *     summary: Deletes a DLC
+ *     description: Deletes a DLC from database from its id
  *     parameters:
  *       - in: path
  *         name: id
  *         schema:
  *           type: integer
  *           minimum: 1
- *         description: L'id du jeu à supprimer
+ *         description: The id of the DLC to delete
  *     responses:
  *       204:
- *         description: Jeu supprimé avec succès.
+ *         description: DLC deleted successfully
  *       400:
- *         description: L'id doit être un nombre entier positif.
+ *         description: The id must be a positive integer.
  */
-gamesRouter.delete("/:id", async (req, res) => {
+dlcsRouter.delete("/:id", async (req, res) => {
     try {
         // Handling errors with the id parameter
         if (isNaN(req.params.id) || req.params.id < 1) {
-            return res.status(400).json({error: "L'id doit être un nombre entier positif."});
+            return res.status(400).json({error: "The id must be a positive integer."});
         }
 
         // Deleting the entry
-        await CRUD.deleteFromEntity("games", req.params.id);
-        res.status(204).json({message: "Jeu supprimé avec succès."});
+        await CRUD.deleteFromEntity("dlcs", req.params.id);
+        res.status(204).json({message: "DLC deleted successfully"});
     }
     catch (error) {
         res.status(500).json({error: error.message});
@@ -379,4 +388,4 @@ gamesRouter.delete("/:id", async (req, res) => {
 /***********************************************************************************************************************
  *  Exports
  **********************************************************************************************************************/
-export default gamesRouter;
+export default dlcsRouter;
