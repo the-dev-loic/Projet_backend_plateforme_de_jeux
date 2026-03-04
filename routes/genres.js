@@ -3,9 +3,9 @@
  * Description :            route for genres table
  * Author :                 Cédric Jankiewicz
  * Creation date :          24.02.2026
- * Modified by :            Cédric Jankiewicz
- * Modification date :      25.02.2026
- * Version :                0.1.0
+ * Modified by :            Gatien Clerc
+ * Modification date :      04.03.2026
+ * Version :                0.1.4
  **********************************************************************************************************************/
 import express from 'express';
 const router = express.Router();
