@@ -18,8 +18,8 @@ import { CRUD } from "../database/database-connection.js";
  *   post:
  *     tags:
  *       - GameHasGenres
- *     summary: Create a genre
- *     description: Create a new genre.
+ *     summary: Create a game_has_genre
+ *     description: Create a new game_has_genre.
  *     requestBody:
  *       required: true
  *       content:
@@ -27,11 +27,15 @@ import { CRUD } from "../database/database-connection.js";
  *           schema:
  *             type: object
  *             required:
- *               - name
+ *               - game_id
+ *               - genre_id
  *             properties:
- *               name:
- *                 type: string
- *                 example: rpg
+ *               game_id:
+ *                 type: integer
+ *                 example: 1
+ *               genre_id:
+ *                 type: integer
+ *                 exemple: 4
  *     responses:
  *       200:
  *         description: genre created successfully
@@ -57,21 +61,21 @@ router.post('/', async (req, res) => {
  *  get:
  *     tags:
  *       - GameHasGenres
- *     summary: Get all genres
- *     description: Retrieve a list of genres.
+ *     summary: Get all games_has_genres
+ *     description: Retrieve a list of games_has_genres.
  *     parameters:
  *       - in: query
  *         name: column
  *         schema:
  *           type: string
  *         description: the column to filter by
- *         example: name
+ *         example: game_id
  *       - in: query
  *         name: filter
  *         schema:
  *           type: string
  *         description: the filter to search by
- *         example: RPG
+ *         example: 2
  *       - in: query
  *         name: limit
  *         schema:
@@ -80,7 +84,7 @@ router.post('/', async (req, res) => {
  *         example: 10
  *     responses:
  *       200:
- *         description: Successfully retrieved genres
+ *         description: Successfully retrieved games_has_genres
  *       400:
  *         description: Bad request
  *       404:
@@ -108,23 +112,23 @@ router.get('/', async (req, res) => {
  *   get:
  *     tags:
  *       - GameHasGenres
- *     summary: Get a single genre
- *     description: Retrieve a specific genre by its ID.
+ *     summary: Get a single game_has_genre
+ *     description: Retrieve a specific game_has_genre by its ID.
  *     parameters:
  *       - in: path
  *         name: id
  *         required: true
  *         schema:
  *           type: string
- *         description: The ID of the genre
+ *         description: The ID of the game_has_genre
  *         example: 1
  *     responses:
  *       200:
- *         description: Successfully retrieved the genre
+ *         description: Successfully retrieved the game_has_genre
  *       400:
  *         description: Bad request
  *       404:
- *         description: genre not found
+ *         description: game_has_genre not found
  *       500:
  *         description: Internal server error
  */
@@ -145,15 +149,15 @@ router.get('/:id', async (req, res) => {
  *   put:
  *     tags:
  *       - GameHasGenres
- *     summary: Edit a genre
- *     description: Edit a genre by its ID.
+ *     summary: Edit a game_has_genre
+ *     description: Edit a game_has_genre by its ID.
  *     parameters:
  *       - in: path
  *         name: id
  *         required: true
  *         schema:
  *           type: string
- *         description: The ID of the genre
+ *         description: The ID of the game_has_genre
  *         example: 1
  *     requestBody:
  *       required: true
@@ -162,18 +166,22 @@ router.get('/:id', async (req, res) => {
  *           schema:
  *             type: object
  *             required:
- *               - name
+ *               - game_id
+ *               - genre_id
  *             properties:
- *               name:
- *                 type: string
- *                 example: rpg
+ *               game_id:
+ *                 type: integer
+ *                 example: 1
+ *               genre_id:
+ *                 type: integer
+ *                 exemple: 3
  *     responses:
  *       200:
- *         description: Successfully edited the genre
+ *         description: Successfully edited the game_has_genre
  *       400:
  *         description: Bad request
  *       404:
- *         description: genre not found
+ *         description: game_has_genre not found
  *       500:
  *         description: Internal server error
  */
@@ -199,23 +207,23 @@ router.put('/:id', async (req, res) => {
  *   delete:
  *     tags:
  *       - GameHasGenres
- *     summary: Delete a genre
- *     description: Delete a specific genre by its ID.
+ *     summary: Delete a game_has_genre
+ *     description: Delete a specific game_has_genre by its ID.
  *     parameters:
  *       - in: path
  *         name: id
  *         required: true
  *         schema:
  *           type: string
- *         description: The ID of the genre
+ *         description: The ID of the game_has_genre
  *         example: 1
  *     responses:
  *       200:
- *         description: genre deleted successfully
+ *         description: game_has_genre deleted successfully
  *       400:
  *         description: Bad request
  *       404:
- *         description: genre not found
+ *         description: game_has_genre not found
  *       500:
  *         description: Internal server error
  */
