@@ -93,14 +93,19 @@ router.post('/', async (req, res) => {
  *         description: Internal server error
  */
 router.get('/', async (req, res) => {
-    const searchName = req.query.name; // get param 'name'
-    const limit = req.query.limit; // get param 'limit'
-    if (!(parseInt(limit) > 0) && limit) {
-        res.status(400).json({error: "limit invalid number"});
-        return;
+    try {
+        // Variables
+        const column = req.query.column;
+        const filter = req.query.filter;
+        const limit = parseInt(req.query.limit);
+
+        // Reading the entries
+        const allUsers = await CRUD.getAllFromEntity("users", column, filter, limit);
+        res.status(200).json(allUsers);
     }
-    let users = await CRUD.getAllFromEntity('users', 'username', searchName, limit);
-    res.status(200).json(users)
+    catch (error) {
+        res.status(500).json({error: error.message});
+    }
 })
 
 /**
