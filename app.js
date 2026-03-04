@@ -3,73 +3,52 @@
  * Description :            Main app of the API
  * Author :                 Cédric Jankiewicz
  * Creation date :          04.02.2026
- * Modified by :            Loïc Roux
- * Modification date :      11.02.2026
- * Version :                0.1.3
+ * Modified by :            Thierry Perroud
+ * Modification date :      24.02.2026
+ * Version :                0.1.4
  **********************************************************************************************************************/
 "use strict";
+
+/***********************************************************************************************************************
+ *  Imports
+ **********************************************************************************************************************/
 import express from 'express';
+import genresRouter from "./routes/genres.js";
+import usersRouter from "./routes/users.js";
 import swaggerUi from 'swagger-ui-express';
 import swaggerSpec from "./swagger.js";
+import { gamesRouter } from "./routes/games.js"
+
+/***********************************************************************************************************************
+ *  Express
+ **********************************************************************************************************************/
 const app = express();
 const port = 3000;
 
-//  read JSON
+// read JSON
 app.use(express.json());
 
+/***********************************************************************************************************************
+ *  Routes
+ **********************************************************************************************************************/
 
-// routes swagger
+// swagger route
 app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec));
 
-// --- Routes de l'API ---
-
-/**
- * @openapi
- * /:
- * get:
- * summary: Message de bienvenue
- * responses:
- * 200:
- * description: Succès
- * content:
- * text/plain:
- * schema:
- * type: string
- * example: "Bienvenue sur l'API !"
- */
+// API routes
 app.get('/', (req, res) => {
-    res.send('Bienvenue sur l\'API !');
+    res.send('Welcome on the videogame plateform API');
 });
 
-/**
- * @openapi
- * /users:
- * get:
- * summary: Récupère la liste des utilisateurs
- * responses:
- * 200:
- * description: Liste des utilisateurs récupérée
- * content:
- * application/json:
- * schema:
- * type: array
- * items:
- * type: object
- * properties:
- * id:
- * type: integer
- * nom:
- * type: string
- */
-app.get('/users', (req, res) => {
-    res.json([
-        { id: 1, nom: 'Alice' },
-        { id: 2, nom: 'Bob' }
-    ]);
-});
+/***********************************************************************************************************************
+ *  Routers
+ **********************************************************************************************************************/
+app.use('/api/Games', gamesRouter);
+app.use('/api/users', usersRouter);
+app.use('/api/genres', genresRouter);
 
-// start server
+// start the server
 app.listen(port, () => {
-    console.log(`✅ Serveur démarré sur http://localhost:${port}`);
-    console.log(`📖 Documentation disponible sur http://localhost:${port}/api-docs`);
+    console.log(`Server running at http://localhost:${port}`);
+    console.log(`Documentation at http://localhost:${port}/api-docs`);
 });
