@@ -11,6 +11,7 @@
 
 import express from 'express';
 import users_has_GamesRouteur from "./routes/Users_has_Games.js";
+import users_has_DLCRouteur from "./routes/Users_has_DlC.js";
 import swaggerUi from 'swagger-ui-express';
 import swaggerSpec from "./swagger.js";
 const app = express();
@@ -31,6 +32,8 @@ app.get('/', (req, res) => {
 
 // router
 app.use('/api/Users_has_Games', users_has_GamesRouteur);
+// router
+app.use('/api/Users_has_DlC', users_has_DLCRouteur);
 
 // start the server
 app.listen(port, () => {
