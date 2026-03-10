@@ -29,32 +29,29 @@ const dlcsRouter = express.Router();  // Router for http://localhost:3000/api/dl
  *       - DLCs
  *     summary: Creates a DLC
  *     description: Creates a new DLC into the database
- *     parameters:
- *       - in: body
- *         name: game_id
- *         schema:
- *           type: integer
- *           minimum: 1
- *         description: The id of the game that has the DLC
- *       - in: body
- *         name: name
- *         schema:
- *           type: string
- *           maxLength: 100
- *         description: The name of the new DLC (max 100 characters)
- *       - in: body
- *         name: description
- *         schema:
- *           type: string
- *           nullable: true
- *           maxLength: 255
- *         description: The description of the new DLC (can be null, max 255 characters)
- *       - in: body
- *         name: price
- *         schema:
- *           type: number
- *           minimum: 0
- *         description: The price of the new DLC (min 0, in which case it is free)
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             required:
+ *               - game_id
+ *               - name
+ *               - price
+ *             properties:
+ *               game_id:
+ *                 type: int
+ *                 example: 1
+ *               name:
+ *                 type: string
+ *                 example: The name of my DLC
+ *               description:
+ *                 type: string
+ *                 example: The description of my DLC
+ *               price:
+ *                 type: number
+ *                 example: 15.00
  *     responses:
  *       201:
  *         description: The new DLC was created
@@ -257,30 +254,29 @@ dlcsRouter.get("/:id", async (req, res) => {
  *           type: integer
  *           minimum: 1
  *         description: The id of the DLC to update
- *       - in: body
- *         name: game_id
- *         schema:
- *           type: integer
- *           minimum: 1
- *         description: The new game that has the DLC
- *       - in: body
- *         name: name
- *         schema:
- *           type: string
- *           maxLength: 100
- *         description: The new DLC's name (max 100 characters)
- *       - in: body
- *         name: description
- *         schema:
- *           type: string
- *           nullable: true
- *           maxLength: 255
- *         description: The new description of the DLC (can be null, max 255 characters)
- *       - in: body
- *         name: price
- *         schema:
- *           type: number
- *         description: The new price of the DLC
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             required:
+ *               - game_id
+ *               - name
+ *               - price
+ *             properties:
+ *               game_id:
+ *                 type: int
+ *                 example: 1
+ *               name:
+ *                 type: string
+ *                 example: The new name of my DLC
+ *               description:
+ *                 type: string
+ *                 example: The new description of my DLC
+ *               price:
+ *                 type: number
+ *                 example: 10.00
  *     responses:
  *       200:
  *         description: DLC updated
