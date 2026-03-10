@@ -54,3 +54,5 @@ app.listen(port, () => {
     console.log(`Server running at http://localhost:${port}`);
     console.log(`Documentation at http://localhost:${port}/api-docs`);
 });
+
+export default app; // Export the app for testing
