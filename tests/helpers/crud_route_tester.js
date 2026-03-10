@@ -1,3 +1,13 @@
+/***********************************************************************************************************************
+ * Program name :           crud_route_tester.js
+ * Description :            helper for route unit test
+ * Author :                 Cédric Jankiewicz
+ * Creation date :          10.03.2026
+ * Modified by :            -
+ * Modification date :      -
+ * Version :                0.1.0
+ **********************************************************************************************************************/
+
 import request from 'supertest';
 
 export function testCrudRoutes(app, basePath, validBody, updateBody) {
