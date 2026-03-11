@@ -37,7 +37,7 @@ import { CRUD } from "../database/database-connection.js";
  *                 type: integer
  *                 example: 2
  *     responses:
- *       200:
+ *       201:
  *         description: user_has_dlc created successfully
  *       400:
  *         description: Bad request
@@ -51,7 +51,7 @@ router.post('/', async (req, res) => {
     }
     const data = Object.values(req.body);
     let response = await CRUD.createInEntity("users_has_dlcs", ['user_id', 'DLC_id'], data);
-    res.status(200).json(response);
+    res.status(201).json(response);
 });
 
 
@@ -218,7 +218,7 @@ router.put('/:id', async (req, res) => {
  *         description: The ID of the user_has_dlc
  *         example: 1
  *     responses:
- *       200:
+ *       204:
  *         description: user_has_dlc deleted successfully
  *       400:
  *         description: Bad request
@@ -234,7 +234,7 @@ router.delete('/:id', async (req, res) => {
         return;
     }
     let response = await CRUD.deleteFromEntity("users_has_dlcs", id);
-    res.status(200).json(response);
+    res.status(204).json(response);
 });
 
 

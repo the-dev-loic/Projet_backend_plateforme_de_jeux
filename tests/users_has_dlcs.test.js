@@ -15,14 +15,14 @@ describe("User_has_DLC routes", () => {
 
     testCrudRoutes(
         app,
-        "/api/User_hsa_DLC",
+        "/api/users_has_dlcs",
         {
-            game_id: 1,
-            genre_id: 1
+            user_id: 1,
+            DLC_id: 2
         },
         {
-            game_id: 1,
-            genre_id: 3
+            user_id: 1,
+            DLC_id: 3
         }
     );
 
