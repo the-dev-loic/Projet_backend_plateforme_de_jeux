@@ -99,7 +99,7 @@ router.post('/', async (req, res) => {
  *         example: 10
  *     responses:
  *       200:
- *         description: Liste des activités
+ *         description: Liste des utilisateur
  *         content:
  *           application/json:
  *             schema:

@@ -55,7 +55,7 @@ const gamesRouter = express.Router();  // Router for http://localhost:3000/api/G
 *                 example: 15.00
 *     responses:
 *       201:
-*         description: La nouvelle activité a été crée
+*         description: La nouveau jeu a été crée
 *         content:
 *           application/json:
 *             schema:
@@ -129,19 +129,22 @@ gamesRouter.post("/", async (req, res) => {
  *         schema:
  *           type: string
  *         description: La colonne à filtrer (optionnel, a besoin du filtre)
+ *         exemple: name
  *       - in: query
  *         name: filter
  *         schema:
  *           type: string
  *         description: Le filtrage à appliquer à la colonne (optionnel, a besoin de la colonne)
+*         exemple: Counter-Strike
  *       - in: query
  *         name: limit
  *         schema:
  *           type: integer
  *         description: Nombre maximum de résultats (optionnel)
+ *         exemple: 3
  *     responses:
  *       200:
- *         description: Liste des activités
+ *         description: Liste des jeux
  *         content:
  *           application/json:
  *             schema:
@@ -195,6 +198,7 @@ gamesRouter.get("/", async (req, res) => {
  *           type: integer
  *           minimum: 1
  *         description: L'id du jeu
+ *         exemple: 1
  *     responses:
  *       201:
  *         description: Jeu retourné

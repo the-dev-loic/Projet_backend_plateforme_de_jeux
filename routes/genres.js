@@ -42,8 +42,8 @@ import { CRUD } from "../database/database-connection.js";
  *               properties:
  *                 id:
  *                   type: integer
- *                 uname:
- *                   type: integer
+ *                 name:
+ *                   type: string
  *       400:
  *         description: Bad request
  *       500:
@@ -99,7 +99,7 @@ router.post('/', async (req, res) => {
  *                 id:
  *                   type: integer
  *                 name:
- *                   type: integer
+ *                   type: string
  *       400:
  *         description: Bad request
  *       404:
@@ -148,7 +148,7 @@ router.get('/', async (req, res) => {
  *                 id:
  *                   type: integer
  *                 name:
- *                   type: integer
+ *                   type: string
  *       400:
  *         description: Bad request
  *       404:
@@ -205,7 +205,7 @@ router.get('/:id', async (req, res) => {
  *                 id:
  *                   type: integer
  *                 name:
- *                   type: integer
+ *                   type: string
  *       400:
  *         description: Bad request
  *       404:
@@ -248,7 +248,7 @@ router.put('/:id', async (req, res) => {
  *         example: 1
  *     responses:
  *       204:
- *         description: Liste des activités
+ *         description: Liste des genres
  *         content:
  *           application/json:
  *             schema:
@@ -257,7 +257,7 @@ router.put('/:id', async (req, res) => {
  *                 id:
  *                   type: integer
  *                 name:
- *                   type: integer
+ *                   type: string
  *       400:
  *         description: Bad request
  *       404:
