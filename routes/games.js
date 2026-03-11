@@ -83,7 +83,7 @@ gamesRouter.post("/", async (req, res) => {
         const data = [publisher_id, name, description, price];
 
         // Error handling
-        if (publisher_id == null || !name == null || price == null) {
+        if (publisher_id == null || name == null || price == null) {
             return res.status(400).json({error: "Un ou plusieurs paramètres indispensables sont vides."});
         }
 
@@ -308,7 +308,7 @@ gamesRouter.put("/:id", async (req, res) => {
         const data = [publisher_id, name, description, price];
 
         // Error handling
-        if (publisher_id == null || !name == null || price == null) {
+        if (publisher_id == null || name == null || price == null) {
             return res.status(400).json({error: "Un ou plusieurs paramètres indispensables sont vides."});
         }
 
@@ -379,4 +379,4 @@ gamesRouter.delete("/:id", async (req, res) => {
 /***********************************************************************************************************************
  *  Exports
  **********************************************************************************************************************/
-export { gamesRouter };
+export default gamesRouter;
