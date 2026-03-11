@@ -21,6 +21,8 @@ import dlcsRouter from "./routes/dlcs.js";
 import usersRouter from "./routes/users.js";
 import genresRouter from "./routes/genres.js";
 import gamesHasGenresRouter from "./routes/games_has_genres.js"
+import User_has_Game from "./routes/User_has_Game.js"
+import User_has_DLC  from "./routes/Users_has_DLC.js"
 
 /***********************************************************************************************************************
  *  Express
@@ -51,6 +53,8 @@ app.use('/api/dlcs', dlcsRouter);
 app.use('/api/users', usersRouter);
 app.use('/api/genres', genresRouter);
 app.use('/api/games_has_genres', gamesHasGenresRouter);
+app.use('/api/User_has_DLC', User_has_DLC);
+app.use('/api/User_has_Game', User_has_Game);
 
 // start the server
 app.listen(port, () => {
