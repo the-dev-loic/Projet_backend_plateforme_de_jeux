@@ -19,6 +19,8 @@ import swaggerUi from 'swagger-ui-express';
 import swaggerSpec from "./swagger.js";
 import { gamesRouter } from "./routes/games.js"
 import gamesHasGenresRouter from "./routes/games_has_genres.js"
+import User_has_Game from "./routes/User_has_Game.js"
+import User_has_DLC  from "./routes/Users_has_DLC.js"
 
 /***********************************************************************************************************************
  *  Express
@@ -48,6 +50,8 @@ app.use('/api/Games', gamesRouter);
 app.use('/api/users', usersRouter);
 app.use('/api/genres', genresRouter);
 app.use('/api/games_has_genres', gamesHasGenresRouter);
+app.use('/api/User_has_DLC', User_has_DLC);
+app.use('/api/User_has_Game', User_has_Game);
 
 // start the server
 app.listen(port, () => {
