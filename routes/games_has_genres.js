@@ -68,7 +68,7 @@ router.post('/', async (req, res) => {
 /**
  * @swagger
  * /api/games_has_genres:
- *  get:
+ *   get:
  *     tags:
  *       - GamesHasGenres
  *     summary: Get all games has genres

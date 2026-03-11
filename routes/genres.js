@@ -50,14 +50,13 @@ import { CRUD } from "../database/database-connection.js";
  *         description: Internal server error
  */
 router.post('/', async (req, res) => {
-    res.json(req.body);
     const data = Object.values(req.body);
     if (data[0] === "" || !data[0] || data[0].length > 45) {
         res.status(400).json({error: "invalid name, name need to be under 45 characters"});
         return;
     }
     let response = await CRUD.createInEntity("genres", ['name'], data);
-    res.status(200).json(response)
+    res.status(201).json(response)
 })
 
 
@@ -214,9 +213,8 @@ router.get('/:id', async (req, res) => {
  *         description: Internal server error
  */
 router.put('/:id', async (req, res) => {
-    res.json(req.body);
     const data = Object.values(req.body);
-    if (data[0] === "" || data[0].length > 45) {
+    if (data[0] === "" || !data[0] || data[0].length > 45) {
         res.status(400).json({error: "invalid name, name need to be under 45 characters"});
         return;
     }
@@ -225,8 +223,8 @@ router.put('/:id', async (req, res) => {
         res.status(400).json({error: "id should be a positive integer"});
         return;
     }
-    let response = await CRUD.updateInEntity("genres", id, ['name'], data)
-    res.status(200).json(response)
+    let response = await CRUD.updateInEntity("genres", id, ['name'], data);
+    res.status(200).json(response);
 })
 
 
@@ -272,7 +270,7 @@ router.delete('/:id', async (req, res) => {
         return;
     }
     let response = await CRUD.deleteFromEntity("genres", id)
-    res.status(200).json(response)
+    res.status(204).json(response)
 })
 
 export default router;
