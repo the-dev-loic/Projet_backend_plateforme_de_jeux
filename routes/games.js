@@ -4,8 +4,8 @@
  * Author :                 Thierry Perroud
  * Creation date :          25.02.2026
  * Modified by :            Gatien Clerc
- * Modification date :      04.03.2026
- * Version :                0.1.2
+ * Modification date :      11.03.2026
+ * Version :                0.1.6
  **********************************************************************************************************************/
 "use strict";
 
@@ -82,7 +82,7 @@ gamesRouter.post("/", async (req, res) => {
         const data = [publisher_id, name, description, price];
 
         // Error handling
-        if (!publisher_id || !name || ! price) {
+        if (publisher_id == null || name == null || price == null) {
             return res.status(400).json({error: "Un ou plusieurs paramètres indispensables sont vides."});
         }
 
@@ -96,11 +96,11 @@ gamesRouter.post("/", async (req, res) => {
 
         if (description.length > 255) {
             return res.status(400).json({error: "La description du jeu ne peut pas dépasser 255 " +
-                                                            "caractères."});
+                    "caractères."});
         }
 
-        if (isNaN(price) || price <= 0) {
-            return res.status(400).json({error: "Le prix du jeu doit être un nombre positif."})
+        if (isNaN(price) || price < 0) {
+            return res.status(400).json({error: "Le prix du jeu doit être un nombre positif ou zéro."})
         }
 
         //  Creating the entry
@@ -291,7 +291,7 @@ gamesRouter.get("/:id", async (req, res) => {
  *                 price:
  *                   type: number
  *       400:
- *         description: Un ou plusieurs paramètres indispensables sont vides. | L'id de l'éditeur doit être un nombre entier positif. | Le nom du jeu ne peut pas dépasser 100 caractères. | la description du jeu ne doit pas dépasser les 255 caractères. | Le prix du jeu doit être un nombre positif.
+ *         description: Un ou plusieurs paramètres indispensables sont vides. | L'id de l'éditeur doit être un nombre entier positif. | Le nom du jeu ne peut pas dépasser 100 caractères. | la description du jeu ne doit pas dépasser les 255 caractères. | Le prix du jeu doit être un nombre positif ou zéro.
  */
 gamesRouter.put("/:id", async (req, res) => {
     try {
@@ -306,7 +306,7 @@ gamesRouter.put("/:id", async (req, res) => {
         const data = [publisher_id, name, description, price];
 
         // Error handling
-        if (!publisher_id || !name || ! price) {
+        if (publisher_id == null || name == null || price == null) {
             return res.status(400).json({error: "Un ou plusieurs paramètres indispensables sont vides."});
         }
 
@@ -320,11 +320,11 @@ gamesRouter.put("/:id", async (req, res) => {
 
         if (description.length > 255) {
             return res.status(400).json({error: "La description du jeu ne peut pas dépasser 255 " +
-                                                            "caractères."});
+                    "caractères."});
         }
 
         if (isNaN(price) || price <= 0) {
-            return res.status(400).json({error: "Le prix du jeu doit être un nombre positif."})
+            return res.status(400).json({error: "Le prix du jeu doit être un nombre positif ou zéro."})
         }
 
         // Updating the entry
@@ -377,4 +377,4 @@ gamesRouter.delete("/:id", async (req, res) => {
 /***********************************************************************************************************************
  *  Exports
  **********************************************************************************************************************/
-export { gamesRouter };
+export default gamesRouter;

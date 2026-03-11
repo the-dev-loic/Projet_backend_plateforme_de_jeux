@@ -13,11 +13,14 @@
  *  Imports
  **********************************************************************************************************************/
 import express from 'express';
-import genresRouter from "./routes/genres.js";
-import usersRouter from "./routes/users.js";
 import swaggerUi from 'swagger-ui-express';
 import swaggerSpec from "./swagger.js";
-import { gamesRouter } from "./routes/games.js"
+
+import gamesRouter from "./routes/games.js";
+import dlcsRouter from "./routes/dlcs.js";
+import usersRouter from "./routes/users.js";
+import genresRouter from "./routes/genres.js";
+import gamesHasGenresRouter from "./routes/games_has_genres.js"
 
 /***********************************************************************************************************************
  *  Express
@@ -43,12 +46,16 @@ app.get('/', (req, res) => {
 /***********************************************************************************************************************
  *  Routers
  **********************************************************************************************************************/
-app.use('/api/Games', gamesRouter);
+app.use('/api/games', gamesRouter);
+app.use('/api/dlcs', dlcsRouter);
 app.use('/api/users', usersRouter);
 app.use('/api/genres', genresRouter);
+app.use('/api/games_has_genres', gamesHasGenresRouter);
 
 // start the server
 app.listen(port, () => {
     console.log(`Server running at http://localhost:${port}`);
     console.log(`Documentation at http://localhost:${port}/api-docs`);
 });
+
+export default app; // Export the app for testing

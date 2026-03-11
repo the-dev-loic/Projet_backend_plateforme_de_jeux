@@ -4,8 +4,8 @@
  * Author :                 Thierry Perroud
  * Creation date :          11.02.2026
  * Modified by :            Thierry Perroud
- * Modification date :      12.02.2026
- * Version :                0.1.1
+ * Modification date :      04.03.2026
+ * Version :                0.1.2
  **********************************************************************************************************************/
 "use strict";
 
@@ -20,8 +20,8 @@ import mysql2 from "mysql2/promise";
 // MySQL connection instance to the database
 const connection = await mysql2.createConnection({
     host:       "localhost",
-    user:       "API",                     // Needs to be configured
-    password:   "1234",                     // Needs to be configured
+    user:       "API",                  // Needs to be configured
+    password:   "1234",                 // Needs to be configured
     port:       3306,
     database:   "videogames_platform"
 });
@@ -49,7 +49,8 @@ const CRUD = {
 
         // Example query: INSERT INTO table (col1, col2, col3) VALUES ('val1', 'val2', 'val3')
         const [result] = await connection.query(`INSERT INTO ${table} (${columnList}) VALUES (${placeholders})`, data);
-        return {id: result.insertId, data};
+        const rows = Object.fromEntries(columns.map((col, i) => [col, data[i]]));
+        return {id: result.insertId, ...rows};
     },
 
     /*******************************************************************************************************************
@@ -79,7 +80,8 @@ const CRUD = {
 
         // Example query: UPDATE table SET col1 = val1, col2 = val2, col3 = val3
         await connection.query(`UPDATE ${table} SET ${setValues} WHERE id = ${id}`, data);
-        return {id, data};
+        const rows = Object.fromEntries(columns.map((col, i) => [col, data[i]]));
+        return {id, ...rows};
     },
 
     /*******************************************************************************************************************
