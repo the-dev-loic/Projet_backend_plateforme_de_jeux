@@ -1,8 +1,8 @@
 /***********************************************************************************************************************
- * Program name :           game_has_genres.test.js
- * Description :            unit test for the route games_has_genres
+ * Program name :           genres.test.js
+ * Description :            unit test for the route genres
  * Author :                 Cédric Jankiewicz
- * Creation date :          10.03.2026
+ * Creation date :          11.03.2026
  * Modified by :            -
  * Modification date :      -
  * Version :                0.1.0

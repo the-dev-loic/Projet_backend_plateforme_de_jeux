@@ -1,6 +1,6 @@
 /***********************************************************************************************************************
- * Program name :           game.test.js
- * Description :            unit test for the route games
+ * Program name :           users.test.js
+ * Description :            unit test for the route users
  * Author :                 Cédric Jankiewicz
  * Creation date :          11.03.2026
  * Modified by :            -
@@ -11,22 +11,20 @@
 import app from "../app.js";
 import { testCrudRoutes } from "./helpers/crud_route_tester.js";
 
-describe("games routes", () => {
+describe("users routes", () => {
 
     testCrudRoutes(
         app,
-        "/api/games",
+        "/api/users",
         {
-            publisher_id: 2,
-            name: "un jeux",
-            description: "aaaaaaaaaaaaaaaaaaaaaaa",
-            price: 10000
-        },
+            username: "p1",
+            email: "pi@gmail.com",
+            password: "password"
+    },
         {
-            publisher_id: 2,
-            name: "un jeux",
-            description: "aa",
-            price: 1
+            username: "pie",
+            email: "a@gmail.com",
+            password: "Pa$$w0rd"
         }
     );
 
