@@ -37,7 +37,7 @@ import { CRUD } from "../database/database-connection.js";
  *                 type: integer
  *                 exemple: 4
  *     responses:
- *       200:
+ *       201:
  *         description: genre created successfully
  *       400:
  *         description: Bad request
@@ -51,7 +51,7 @@ router.post('/', async (req, res) => {
     }
     const data = Object.values(req.body);
     let response = await CRUD.createInEntity("games_has_genres", ['game_id', 'genre_id'], data);
-    res.status(200).json(response)
+    res.status(201).json(response)
 })
 
 
@@ -218,7 +218,7 @@ router.put('/:id', async (req, res) => {
  *         description: The ID of the game_has_genre
  *         example: 1
  *     responses:
- *       200:
+ *       204:
  *         description: game_has_genre deleted successfully
  *       400:
  *         description: Bad request
@@ -234,7 +234,7 @@ router.delete('/:id', async (req, res) => {
         return;
     }
     let response = await CRUD.deleteFromEntity("games_has_genres", id)
-    res.status(200).json(response)
+    res.status(204).json(response)
 })
 
 
