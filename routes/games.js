@@ -73,7 +73,9 @@ const gamesRouter = express.Router();  // Router for http://localhost:3000/api/G
 *                   type: number
 *       400:
 *         description: Un ou plusieurs paramètres indispensables sont vides. | L'id de l'éditeur doit être un nombre entier positif. | Le nom du jeu ne peut pas dépasser 100 caractères. | la description du jeu ne doit pas dépasser les 255 caractères. | Le prix du jeu doit être un nombre positif.
-*/
+*       500:
+ *         description: Internal server error
+ */
 gamesRouter.post("/", async (req, res) => {
     try {
         // Variables
@@ -155,6 +157,12 @@ gamesRouter.post("/", async (req, res) => {
  *                   type: string
  *                 price:
  *                   type: number
+ *       400:
+ *         description: Bad request
+ *       404:
+ *         description: Page not found
+ *       500:
+ *         description: Internal server error
  */
 gamesRouter.get("/", async (req, res) => {
     try {
@@ -209,6 +217,8 @@ gamesRouter.get("/", async (req, res) => {
  *         description: L'id doit être un nombre entier positif.
  *       404:
  *         description: Jeu non trouvé.
+ *       500:
+ *         description: Internal server error
  */
 gamesRouter.get("/:id", async (req, res) => {
     try {
@@ -256,11 +266,11 @@ gamesRouter.get("/:id", async (req, res) => {
  *           schema:
  *             type: object
  *             required:
- *               - editor_id
+ *               - publisher_id
  *               - name
  *               - price
  *             properties:
- *               editor_id:
+ *               publisher_id:
  *                 type: integer
  *                 example: 1
  *               name:
@@ -292,6 +302,10 @@ gamesRouter.get("/:id", async (req, res) => {
  *                   type: number
  *       400:
  *         description: Un ou plusieurs paramètres indispensables sont vides. | L'id de l'éditeur doit être un nombre entier positif. | Le nom du jeu ne peut pas dépasser 100 caractères. | la description du jeu ne doit pas dépasser les 255 caractères. | Le prix du jeu doit être un nombre positif ou zéro.
+ *       404:
+ *         description: users not found
+ *       500:
+ *         description: Internal server error
  */
 gamesRouter.put("/:id", async (req, res) => {
     try {
@@ -356,7 +370,11 @@ gamesRouter.put("/:id", async (req, res) => {
  *       204:
  *         description: Jeu supprimé avec succès.
  *       400:
- *         description: L'id doit être un nombre entier positif.
+ *           description: Bad request
+ *       404:
+ *         description: users not found
+ *       500:
+ *         description: Internal server error
  */
 gamesRouter.delete("/:id", async (req, res) => {
     try {

@@ -33,8 +33,17 @@ import { CRUD } from "../database/database-connection.js";
  *                 type: string
  *                 example: RPG
  *     responses:
- *       200:
+ *       201:
  *         description: genre created successfully
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 id:
+ *                   type: integer
+ *                 uname:
+ *                   type: integer
  *       400:
  *         description: Bad request
  *       500:
@@ -82,6 +91,15 @@ router.post('/', async (req, res) => {
  *     responses:
  *       200:
  *         description: Successfully retrieved genres
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 id:
+ *                   type: integer
+ *                 name:
+ *                   type: integer
  *       400:
  *         description: Bad request
  *       404:
@@ -121,7 +139,16 @@ router.get('/', async (req, res) => {
  *         example: 1
  *     responses:
  *       200:
- *         description: Successfully retrieved the genre
+ *         description: lister le genre par l'id
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 id:
+ *                   type: integer
+ *                 name:
+ *                   type: integer
  *       400:
  *         description: Bad request
  *       404:
@@ -169,7 +196,16 @@ router.get('/:id', async (req, res) => {
  *                 example: RPG
  *     responses:
  *       200:
- *         description: Successfully edited the genre
+ *         description: Liste des genre
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 id:
+ *                   type: integer
+ *                 name:
+ *                   type: integer
  *       400:
  *         description: Bad request
  *       404:
@@ -211,8 +247,17 @@ router.put('/:id', async (req, res) => {
  *         description: The ID of the genre
  *         example: 1
  *     responses:
- *       200:
- *         description: genre deleted successfully
+ *       204:
+ *         description: Liste des activités
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 id:
+ *                   type: integer
+ *                 name:
+ *                   type: integer
  *       400:
  *         description: Bad request
  *       404:

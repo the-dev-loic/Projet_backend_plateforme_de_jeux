@@ -42,8 +42,21 @@ const router = express.Router();
 *                 type: string
 *                 example: Pa$$w0rd
 *     responses:
-*       200:
+*       201:
 *         description: users created successfully
+*         content:
+*           application/json:
+*             schema:
+*               type: object
+*               properties:
+*                 id:
+*                   type: integer
+*                 username:
+*                   type: integer
+*                 email:
+*                   type: string
+*                 password:
+*                   type: string
 *       400:
 *         description: Bad request
 *       500:
@@ -86,7 +99,20 @@ router.post('/', async (req, res) => {
  *         example: 10
  *     responses:
  *       200:
- *         description: Successfully retrieved users
+ *         description: Liste des activités
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 id:
+ *                   type: integer
+ *                 username:
+ *                   type: integer
+ *                 email:
+ *                   type: string
+ *                 password:
+ *                   type: string
  *       400:
  *         description: Bad request
  *       404:
@@ -129,6 +155,19 @@ router.get('/', async (req, res) => {
  *     responses:
  *       200:
  *         description: Successfully retrieved the users
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 id:
+ *                   type: integer
+ *                 username:
+ *                   type: integer
+ *                 email:
+ *                   type: string
+ *                 password:
+ *                   type: string
  *       400:
  *         description: Bad request
  *       404:
@@ -184,6 +223,19 @@ router.get('/:id', async (req, res) => {
 *     responses:
 *       200:
 *         description: Successfully edited the users
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 id:
+ *                   type: integer
+ *                 username:
+ *                   type: integer
+ *                 email:
+ *                   type: string
+ *                 password:
+ *                   type: string
 *       400:
 *         description: Bad request
 *       404:
@@ -224,7 +276,7 @@ router.put('/:id', async (req, res) => {
  *           description: The ID of the users
  *           example: 1
  *       responses:
- *         200:
+ *         204:
  *           description: users deleted successfully
  *         400:
  *           description: Bad request
