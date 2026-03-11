@@ -58,7 +58,7 @@ router.post('/', async (req, res) => {
 /**
  * @swagger
  * /api/games_has_genres:
- *  get:
+ *   get:
  *     tags:
  *       - GameHasGenres
  *     summary: Get all games_has_genres
@@ -203,7 +203,7 @@ router.put('/:id', async (req, res) => {
 
 /**
  * @swagger
- * /api/genres/{id}:
+ * /api/game_has_genres/{id}:
  *   delete:
  *     tags:
  *       - GameHasGenres
