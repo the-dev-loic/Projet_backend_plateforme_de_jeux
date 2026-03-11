@@ -29,16 +29,18 @@ const router = express.Router();
 *             type: object
 *             required:
 *               - username
+*               - email
+*               - password
 *             properties:
 *               username:
 *                 type: string
-*                 example: PlayerOne
+*                 example: john doe
 *               email:
 *                 type: string
-*                 example: PlayerOne@gmail.com
+*                 example: john.doe@exemple.com
 *               password:
 *                 type: string
-*                 example: Pa$$$w0rd
+*                 example: Pa$$w0rd
 *     responses:
 *       200:
 *         description: users created successfully
@@ -155,11 +157,10 @@ router.get('/:id', async (req, res) => {
 *     parameters:
 *       - in: path
 *         name: id
-*         required: true
 *         schema:
-*           type: string
-*         description: The ID of the users
-*         example: 1
+*           type: integer
+*           minimum: 1
+*         description: The id of the users to update
 *     requestBody:
 *       required: true
 *       content:
@@ -168,16 +169,18 @@ router.get('/:id', async (req, res) => {
 *             type: object
 *             required:
 *               - username
+*               - email
+*               - password
 *             properties:
 *               username:
 *                 type: string
-*                 example: PlayerOne
+*                 example: John Doe
 *               email:
 *                 type: string
-*                 example: PlayerOne@gmail.com
+*                 example: john.doe@exemple.com
 *               password:
 *                 type: string
-*                 example: Pa$$$w0rd
+*                 example: Pa$$w0rd
 *     responses:
 *       200:
 *         description: Successfully edited the users

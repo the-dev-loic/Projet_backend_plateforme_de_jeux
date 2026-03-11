@@ -30,31 +30,29 @@ const gamesRouter = express.Router();  // Router for http://localhost:3000/api/G
 *       - Games
 *     summary: Crée un jeu
 *     description: Crée un nouveau jeu dans la base de données
-*     parameters:
-*       - in: query
-*         name: publisher_id
-*         schema:
-*           type: integer
-*           minimum: 1
-*         description: L'id de l'éditeur du nouveau jeu
-*       - in: query
-*         name: name
-*         schema:
-*           type: string
-*           maxLength: 100
-*         description: Le nom du nouveau jeu (max 100 caractères)
-*       - in: query
-*         name: description
-*         schema:
-*           type: string
-*           nullable: true
-*           maxLength: 255
-*         description: La description du nouveau jeu (peut être vide, max 255 caractères)
-*       - in: query
-*         name: price
-*         schema:
-*           type: number
-*         description: Le prix du nouveau jeu
+*     requestBody:
+*       required: true
+*       content:
+*         application/json:
+*           schema:
+*             type: object
+*             required:
+*               - publisher_id
+*               - name
+*               - price
+*             properties:
+*               publisher_id:
+*                 type: integer
+*                 example: 1
+*               name:
+*                 type: string
+*                 example: The name of my game
+*               description:
+*                 type: string
+*                 example: The description of my game
+*               price:
+*                 type: number
+*                 example: 15.00
 *     responses:
 *       201:
 *         description: La nouvelle activité a été crée
@@ -250,31 +248,30 @@ gamesRouter.get("/:id", async (req, res) => {
  *         schema:
  *           type: integer
  *           minimum: 1
- *         description: L'id du jeu à modifier
- *       - in: query
- *         name: publisher_id
- *         schema:
- *           type: integer
- *           minimum: 1
- *         description: Le nouvel id de l'éditeur du jeu
- *       - in: query
- *         name: name
- *         schema:
- *           type: string
- *           maxLength: 100
- *         description: Le nouveau nom du jeu (max 100 caractères)
- *       - in: query
- *         name: description
- *         schema:
- *           type: string
- *           nullable: true
- *           maxLength: 255
- *         description: La nouvelle description du jeu (peut être vide, max 255 caractères)
- *       - in: query
- *         name: price
- *         schema:
- *           type: number
- *         description: Le nouveau prix du jeu
+ *         description: The id of the game to update
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             required:
+ *               - editor_id
+ *               - name
+ *               - price
+ *             properties:
+ *               editor_id:
+ *                 type: integer
+ *                 example: 1
+ *               name:
+ *                 type: string
+ *                 example: The new name of my game
+ *               description:
+ *                 type: string
+ *                 example: The new description of my game
+ *               price:
+ *                 type: number
+ *                 example: 10.00
  *     responses:
  *       200:
  *         description: Le jeu mis à jour

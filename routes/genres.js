@@ -31,7 +31,7 @@ import { CRUD } from "../database/database-connection.js";
  *             properties:
  *               name:
  *                 type: string
- *                 example: rpg
+ *                 example: RPG
  *     responses:
  *       200:
  *         description: genre created successfully
@@ -151,11 +151,10 @@ router.get('/:id', async (req, res) => {
  *     parameters:
  *       - in: path
  *         name: id
- *         required: true
  *         schema:
- *           type: string
- *         description: The ID of the genre
- *         example: 1
+ *           type: integer
+ *           minimum: 1
+ *         description: The id of the genre to update
  *     requestBody:
  *       required: true
  *       content:
@@ -167,7 +166,7 @@ router.get('/:id', async (req, res) => {
  *             properties:
  *               name:
  *                 type: string
- *                 example: rpg
+ *                 example: RPG
  *     responses:
  *       200:
  *         description: Successfully edited the genre
