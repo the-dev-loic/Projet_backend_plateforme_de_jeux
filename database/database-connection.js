@@ -4,8 +4,8 @@
  * Author :                 Thierry Perroud
  * Creation date :          11.02.2026
  * Modified by :            Thierry Perroud
- * Modification date :      04.03.2026
- * Version :                0.1.2
+ * Modification date :      12.02.2026
+ * Version :                0.1.1
  **********************************************************************************************************************/
 "use strict";
 
@@ -20,8 +20,8 @@ import mysql2 from "mysql2/promise";
 // MySQL connection instance to the database
 const connection = await mysql2.createConnection({
     host:       "localhost",
-    user:       "API",                  // Needs to be configured
-    password:   "1234",                 // Needs to be configured
+    user:       "ProgBack_API",                     // Needs to be configured
+    password:   "1234",                     // Needs to be configured
     port:       3306,
     database:   "videogames_platform"
 });
