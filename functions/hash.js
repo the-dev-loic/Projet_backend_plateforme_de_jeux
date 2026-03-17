@@ -9,10 +9,20 @@
  **********************************************************************************************************************/
 import bcrypt from 'bcrypt';
 
-export async function hashPassword(){
-
+export async function hashPassword(password, saltRounds) {
+    try {
+        const hash = await bcrypt.hash(password, saltRounds);
+        return hash;
+    } catch (err) {
+        throw err;
+    }
 }
 
-export async function verifyPassword(){
-
+export async function verifyPassword(password, hashedPassword) {
+    try {
+        const result = await bcrypt.compare(password, hashedPassword);
+        return result;
+    } catch (err) {
+        throw err;
+    }
 }
