@@ -63,14 +63,13 @@ const router = express.Router();
 *         description: Internal server error
 */
 router.post('/', async (req, res) => {
-    res.json(req.body);
     const data = Object.values(req.body);
     if (data[0] === "" || !data[0] || data[0].length > 45) {
         res.status(400).json({error: "invalid name, name need to be under 45 characters"});
         return;
     }
     let response = await CRUD.createInEntity("users", ['username', 'email', 'password'], data);
-    res.status(200).json(response)
+    res.status(201).json(response)
 })
 
 /**
@@ -292,7 +291,7 @@ router.delete('/:id', async (req, res) => {
         return;
     }
     let response = await CRUD.deleteFromEntity("users", id)
-    res.status(200).json(response)
+    res.status(204).json(response)
 })
 
 export default router;
