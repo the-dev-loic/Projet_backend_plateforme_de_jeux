@@ -3,13 +3,14 @@
  * Description :            route for genres table
  * Author :                 Cédric Jankiewicz
  * Creation date :          24.02.2026
- * Modified by :            Cédric Jankiewicz
- * Modification date :      25.02.2026
- * Version :                0.1.0
+ * Modified by :            Gatien Clerc
+ * Modification date :      04.03.2026
+ * Version :                0.1.4
  **********************************************************************************************************************/
 import express from 'express';
 const router = express.Router();
 import { CRUD } from "../database/database-connection.js";
+
 
 /**
  * @swagger
@@ -30,10 +31,19 @@ import { CRUD } from "../database/database-connection.js";
  *             properties:
  *               name:
  *                 type: string
- *                 example: rpg
+ *                 example: RPG
  *     responses:
  *       201:
  *         description: genre created successfully
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 id:
+ *                   type: integer
+ *                 name:
+ *                   type: string
  *       400:
  *         description: Bad request
  *       500:
@@ -64,13 +74,13 @@ router.post('/', async (req, res) => {
  *         schema:
  *           type: string
  *         description: the column to filter by
- *         example: game_id
+ *         example: name
  *       - in: query
  *         name: filter
  *         schema:
  *           type: string
  *         description: the filter to search by
- *         example: 2
+ *         example: RPG
  *       - in: query
  *         name: limit
  *         schema:
@@ -79,7 +89,16 @@ router.post('/', async (req, res) => {
  *         example: 10
  *     responses:
  *       200:
- *         description: Successfully retrieved games_has_genres
+ *         description: Successfully retrieved genres
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 id:
+ *                   type: integer
+ *                 name:
+ *                   type: string
  *       400:
  *         description: Bad request
  *       404:
@@ -119,7 +138,16 @@ router.get('/', async (req, res) => {
  *         example: 1
  *     responses:
  *       200:
- *         description: Successfully retrieved the genre
+ *         description: lister le genre par l'id
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 id:
+ *                   type: integer
+ *                 name:
+ *                   type: string
  *       400:
  *         description: Bad request
  *       404:
@@ -149,11 +177,10 @@ router.get('/:id', async (req, res) => {
  *     parameters:
  *       - in: path
  *         name: id
- *         required: true
  *         schema:
- *           type: string
- *         description: The ID of the genre
- *         example: 1
+ *           type: integer
+ *           minimum: 1
+ *         description: The id of the genre to update
  *     requestBody:
  *       required: true
  *       content:
@@ -165,10 +192,19 @@ router.get('/:id', async (req, res) => {
  *             properties:
  *               name:
  *                 type: string
- *                 example: rpg
+ *                 example: RPG
  *     responses:
  *       200:
- *         description: Successfully edited the genre
+ *         description: Liste des genre
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 id:
+ *                   type: integer
+ *                 name:
+ *                   type: string
  *       400:
  *         description: Bad request
  *       404:
@@ -210,7 +246,16 @@ router.put('/:id', async (req, res) => {
  *         example: 1
  *     responses:
  *       204:
- *         description: genre deleted successfully
+ *         description: Liste des genres
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 id:
+ *                   type: integer
+ *                 name:
+ *                   type: string
  *       400:
  *         description: Bad request
  *       404:
