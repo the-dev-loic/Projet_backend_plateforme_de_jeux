@@ -3,28 +3,50 @@ const App = Vue.createApp({
     data() {
         return {
             games: [],
+            publishersById: {},
             loading: true,
             error: ""
         };
     },
     methods: {
         async fetchGames() {
+            this.loading = true;
+            this.error = "";
+
             try {
-                const res = await fetch("http://localhost:3000/api/games");
+                const [resGames, resPublishers] = await Promise.all([
+                    fetch("http://localhost:3000/api/games"),
+                    fetch("http://localhost:3000/api/publishers")
+                ]);
 
-                if (!res.ok) {
-                    throw new Error("HTTP " + res.status);
+                if (!resGames.ok) throw new Error("HTTP " + resGames.status + " (games)");
+                if (!resPublishers.ok) throw new Error("HTTP " + resPublishers.status + " (publishers)");
+
+                const [gamesRaw, publishersRaw] = await Promise.all([
+                    resGames.json(),
+                    resPublishers.json()
+                ]);
+
+                const byId = {};
+                for (const p of publishersRaw) {
+                    const id = p.id
+                    const name = p.username
+                    if (id != null) byId[id] = name || `Publisher #${id}`;
                 }
+                this.publishersById = byId;
 
-                const data = await res.json();
-                console.log("Réponse API :", data);
+                this.games = gamesRaw.map(g => {
+                    const pid = g.publisher_id;
+                    return {
+                        ...g,
+                        publisher_name: byId[pid] || `Publisher #${pid}`
+                    };
+                });
 
-                // Le backend doit renvoyer un tableau [{publisher_id,name,description,price}]
-                this.games = data;
-
+                console.log("Jeux enrichis :", this.games);
             } catch (e) {
-                this.error = e.message;
                 console.error(e);
+                this.error = e.message || String(e);
             } finally {
                 this.loading = false;
             }
