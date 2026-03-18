@@ -13,6 +13,8 @@
  *  Imports
  **********************************************************************************************************************/
 import express from 'express';
+import cors from 'cors'
+
 import swaggerUi from 'swagger-ui-express';
 import swaggerSpec from "./swagger.js";
 
@@ -24,12 +26,18 @@ import gamesHasGenresRouter from "./routes/games_has_genres.js"
 import User_has_Game from "./routes/users_has_games.js"
 import User_has_DLC  from "./routes/users_has_dlcs.js"
 import Publishers from "./routes/publishers.js";
+import path from 'path';
+import { fileURLToPath } from "url";
 
 /***********************************************************************************************************************
  *  Express
  **********************************************************************************************************************/
 const app = express();
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 const port = 3000;
+app.use('/front', express.static(path.join(__dirname, 'front')));
+app.use(cors());
 
 // read JSON
 app.use(express.json());
@@ -43,7 +51,7 @@ app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec));
 
 // API routes
 app.get('/', (req, res) => {
-    res.send('Welcome on the videogame plateform API');
+    res.sendFile(path.join(__dirname, "index.html"));
 });
 
 /***********************************************************************************************************************

@@ -62,11 +62,19 @@ const router = express.Router();
  *         description: Internal server error
  */
 router.post('/', async (req, res) => {
-    const data = Object.values(req.body);
-    if (data[0] === "" || !data[0] || data[0].length > 45) {
+    if (req.body.username === "" || !req.body.username || req.body.username.length > 45) {
         res.status(400).json({error: "invalid name, name need to be under 45 characters"});
         return;
     }
+    if (req.body.email === "" || !req.body.email || req.body.email.length > 255) {
+        res.status(400).json({error: "invalid email, email need to be under 45 characters"});
+        return;
+    }
+    if (req.body.password === "" || !req.body.password || req.body.password.length > 64) {
+        res.status(400).json({error: "invalid password, password need to be under 45 characters"});
+        return;
+    }
+    const data = Object.values(req.body);
     let response = await CRUD.createInEntity("publishers", ['username', 'email', 'password'], data);
     res.status(201).json(response)
 })
@@ -243,11 +251,19 @@ router.get('/:id', async (req, res) => {
  */
 router.put('/:id', async (req, res) => {
     res.json(req.body);
-    const data = Object.values(req.body);
-    if (data[0] === "" || data[0].length > 45) {
+    if (req.body.username === "" || !req.body.username || req.body.username.length > 45) {
         res.status(400).json({error: "invalid name, name need to be under 45 characters"});
         return;
     }
+    if (req.body.email === "" || !req.body.email || req.body.email.length > 255) {
+        res.status(400).json({error: "invalid email, email need to be under 45 characters"});
+        return;
+    }
+    if (req.body.password === "" || !req.body.password || req.body.password.length > 64) {
+        res.status(400).json({error: "invalid password, password need to be under 45 characters"});
+        return;
+    }
+    const data = Object.values(req.body);
     const id = parseInt(req.params.id);
     if (!(id > 0)) {
         res.status(400).json({error: "id should be a positive integer"});

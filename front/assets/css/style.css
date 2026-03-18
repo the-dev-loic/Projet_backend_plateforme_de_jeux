@@ -1,0 +1,115 @@
+body {
+    margin: 0;
+    padding: 20px;
+    background-color: #1b2838; /* Bleu foncé Steam */
+    font-family: Arial, Helvetica, sans-serif;
+    color: #c7d5e0; /* Texte Steam */
+}
+
+h1 {
+    color: #66c0f4; /* Bleu vif Steam */
+    text-align: center;
+    margin-bottom: 30px;
+    font-size: 32px;
+    font-weight: bold;
+}
+
+ul {
+    list-style: none;
+    width: 80%;
+    margin: auto;
+    padding: 0;
+}
+
+li {
+    background: #2a475e; /* Fond cartes Steam */
+    border: 1px solid #1b2838;
+    padding: 20px;
+    margin-bottom: 15px;
+    border-radius: 5px;
+    transition: 0.2s ease-in-out;
+}
+
+li:hover {
+    border-color: #66c0f4; /* Bleu Steam */
+    background: #324c63;
+    transform: scale(1.01);
+    cursor: pointer;
+}
+
+strong {
+    font-size: 22px;
+    color: #ffffff;
+}
+
+hr {
+    border: 0;
+    border-bottom: 1px solid #1b2838;
+    margin-top: 15px;
+}
+
+/* Texte description */
+.description {
+    color: #acbac4;
+    margin-top: 5px;
+    display: block;
+}
+
+/* Prix */
+.price {
+    font-weight: bold;
+    color: #d4f4ff;
+}
+
+/* HEADER STYLE STEAM */
+.steam-header {
+    background-color: #171a21; /* fond Steam */
+    padding: 15px 30px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 2px solid #1b2838;
+    margin-bottom: 30px;
+}
+
+.steam-logo {
+    font-size: 26px;
+    font-weight: bold;
+    color: #c7d5e0;
+    letter-spacing: 1px;
+}
+
+/* Container pour les boutons */
+.steam-buttons {
+    display: flex;
+    gap: 15px;
+}
+
+/* Style général boutons Steam */
+.steam-btn {
+    background-color: #2a475e;
+    color: #c7d5e0;
+    border: none;
+    padding: 10px 20px;
+    font-size: 15px;
+    border-radius: 4px;
+    transition: 0.2s ease-in-out;
+}
+
+.steam-btn:hover {
+    background-color: #3b5870;
+    cursor: pointer;
+    transform: scale(1.05);
+}
+
+/* Bouton bleu (S’inscrire) */
+.steam-btn-blue {
+    background-color: #66c0f4;
+    color: #0b1a28;
+    font-weight: bold;
+}
+
+.steam-btn-blue:hover {
+    background-color: #8dd9ff;
+    transform: scale(1.07);
+}
