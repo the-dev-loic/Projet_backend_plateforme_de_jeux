@@ -10,16 +10,21 @@
         <script src="https://unpkg.com/vue@3.4.21/dist/vue.global.js"></script>
     </head>
     <body>
-        <header class="steam-header">
-            <div class="steam-logo">Plateforme de jeux</div>
+    <div id="app">
+            <header class="steam-header">
+                <div class="steam-logo">Plateforme de jeux</div>
 
-            <div class="steam-buttons">
-                <button class="steam-btn">Se connecter</button>
-                <button class="steam-btn steam-btn-blue">S’inscrire</button>
-            </div>
-        </header>
+                <div class="steam-buttons">
+                    <select id="game-select" v-model="by">
+                        <option value="name">Nom</option>
+                        <option value="price">Prix</option>
+                    </select>
+                    <input v-model="search" placeholder="Search..." />
+                    <button class="steam-btn">Se connecter</button>
+                    <button class="steam-btn steam-btn-blue">S’inscrire</button>
+                </div>
+            </header>
 
-        <div id="app">
             <h1>Liste des jeux</h1>
 
             <div v-if="loading">Chargement…</div>
@@ -28,7 +33,7 @@
                 Erreur : {{ error }}
             </div>
 
-            <ul v-else>
+            <ul v-else-if="games.length > 0">
                 <li v-for="(game, i) in games" :key="i">
                     <strong>{{ game.name }}</strong>
                     <span class="description">
@@ -43,6 +48,9 @@
                     Publisher : {{ game.publisher_name }}
                 </li>
             </ul>
+            <div v-else>
+                Aucun jeu trouvé
+            </div>
         </div>
         <!--JS-->
         <script src="./front/main.js"></script>

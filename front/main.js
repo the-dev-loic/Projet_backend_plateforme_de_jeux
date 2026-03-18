@@ -5,7 +5,9 @@ const App = Vue.createApp({
             games: [],
             publishersById: {},
             loading: true,
-            error: ""
+            error: "",
+            search: "",
+            by: "name"
         };
     },
     methods: {
@@ -15,7 +17,7 @@ const App = Vue.createApp({
 
             try {
                 const [resGames, resPublishers] = await Promise.all([
-                    fetch("http://localhost:3000/api/games"),
+                    fetch(`http://localhost:3000/api/games?column=${this.by}&filter=${this.search}`),
                     fetch("http://localhost:3000/api/publishers")
                 ]);
 
@@ -54,5 +56,11 @@ const App = Vue.createApp({
     },
     mounted() {
         this.fetchGames();
+    },
+    watch: {
+        search() {
+            this.loading = true;
+            this.fetchGames();
+        }
     }
 });
