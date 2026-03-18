@@ -25,18 +25,18 @@ INSERT INTO Genres (name) VALUES
 -- Publishers
 -- -----------------------------------------------------
 INSERT INTO Publishers (username, email, password) VALUES
-                                                           ('EpicForge', 'contact@epicforge.com', 'hashedpass1'),
-                                                           ('PixelWorks', 'support@pixelworks.com', 'hashedpass2'),
-                                                           ('NovaStudios', 'hello@novastudios.com', 'hashedpass3');
+                                                           ('EpicForge', 'contact@epicforge.com', '$2b$10$ysqvT4ggwWNyjPBmKYRoiOOqWm0Jgzqs85IA07US./zKNgEeSVhU2'),   #hashedpass1
+                                                           ('PixelWorks', 'support@pixelworks.com', '$2b$10$uJcaq.TG.X4f/YmkhswYa.feiFo1FlzmKSUfUHFcc6i0aijhbYfqW'), #hashedpass2
+                                                           ('NovaStudios', 'hello@novastudios.com', '$2b$10$g4yw/9dNh.5Y2H64Y9J2l.17k.UfREA6TocGDvfDwjjhPkpZusJ1.'); #hashedpass3
 
 -- -----------------------------------------------------
 -- Users
 -- -----------------------------------------------------
 INSERT INTO Users (username, email, password) VALUES
-                                                      ('playerOne', 'player1@mail.com', 'userpass1'),
-                                                      ('gamerGirl', 'gamergirl@mail.com', 'userpass2'),
-                                                      ('noobMaster', 'noob@mail.com', 'userpass3'),
-                                                      ('proSlayer', 'pro@mail.com', 'userpass4');
+                                                      ('playerOne', 'player1@mail.com', '$2b$10$qa2l.nxh.EYXdjDwMIITwe7.GRItI1LhUwTErcj5rxh1qZGUhNAhy'),             #userpass1
+                                                      ('gamerGirl', 'gamergirl@mail.com', '$2b$10$GfMQviKBX9yzkAA/JYrtf.NZuo/vLRGr.ChA/Ax71uLML5BbWBBr.'),           #userpass2
+                                                      ('noobMaster', 'noob@mail.com', '$2b$10$Sw7WNLawh0g9TC48U.ofAeDlmrIdTzjCrC0e7qJMoDwTP8rII9hAq'),               #userpass3
+                                                      ('proSlayer', 'pro@mail.com', '$2b$10$CGVn1VxphfwFIxo6m5IkKukSy/V/ZPHlzXhXKWWSsObDqJ0A2sRzm');                 #userpass4
 
 -- -----------------------------------------------------
 -- Games

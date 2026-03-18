@@ -10,6 +10,7 @@
 "use strict";
 import express from 'express';
 import { CRUD } from "../database/database-connection.js";
+import {hashPassword} from "../functions/hash.js";
 
 const router = express.Router();
 
@@ -63,11 +64,12 @@ const router = express.Router();
 *         description: Internal server error
 */
 router.post('/', async (req, res) => {
-    const data = Object.values(req.body);
-    if (data[0] === "" || !data[0] || data[0].length > 45) {
+    /*if (data[0] === "" || !data[0] || data[0].length > 45) {
         res.status(400).json({error: "invalid name, name need to be under 45 characters"});
         return;
-    }
+    }*/
+    req.body.password = await hashPassword(req.body.password, 10);
+    const data = Object.values(req.body);
     let response = await CRUD.createInEntity("users", ['username', 'email', 'password'], data);
     res.status(201).json(response)
 })
@@ -244,7 +246,7 @@ router.get('/:id', async (req, res) => {
 */
 router.put('/:id', async (req, res) => {
     res.json(req.body);
-    const data = Object.values(req.body);
+    /*
     if (data[0] === "" || data[0].length > 45) {
         res.status(400).json({error: "invalid name, name need to be under 45 characters"});
         return;
@@ -253,7 +255,9 @@ router.put('/:id', async (req, res) => {
     if (!(id > 0)) {
         res.status(400).json({error: "id should be a positive integer"});
         return;
-    }
+    }*/
+    req.body.password = await hashPassword(req.body.password, 10);
+    const data = Object.values(req.body);
     let response = await CRUD.updateInEntity("users", id,['username', 'email', 'password'], data)
     res.status(200).json(response)
 })

@@ -9,19 +9,29 @@
  **********************************************************************************************************************/
 import bcrypt from 'bcrypt';
 
+/**
+ * hash a password
+ * @param password the password to hash
+ * @param saltRounds the salt to add
+ * @returns {Promise}
+ */
 export async function hashPassword(password, saltRounds) {
     try {
-        const hash = await bcrypt.hash(password, saltRounds);
-        return hash;
+        return await bcrypt.hash(password, saltRounds);
     } catch (err) {
         throw err;
     }
 }
 
+/**
+ * verify if the hashed password
+ * @param password the entered password
+ * @param hashedPassword
+ * @returns {Promise}
+ */
 export async function verifyPassword(password, hashedPassword) {
     try {
-        const result = await bcrypt.compare(password, hashedPassword);
-        return result;
+        return await bcrypt.compare(password, hashedPassword);
     } catch (err) {
         throw err;
     }
