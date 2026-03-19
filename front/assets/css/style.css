@@ -113,3 +113,16 @@ hr {
     background-color: #8dd9ff;
     transform: scale(1.07);
 }
+
+.steam-form {
+    width: 400px;              /* Fixed width */
+    margin: 50px auto;         /* Center horizontally with some top margin */
+    padding: 20px;             /* Inner spacing */
+    background-color: #1b1b1b; /* Dark background */
+    border-radius: 8px;        /* Rounded corners */
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.5); /* Soft shadow */
+    display: flex;             /* Optional: flex layout */
+    flex-direction: column;    /* Stack children vertically */
+    gap: 15px;                 /* Space between children */
+    border: 2px solid #333;    /* Optional border for definition */
+}

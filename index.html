@@ -15,13 +15,13 @@
                 <div class="steam-logo">Plateforme de jeux</div>
 
                 <div class="steam-buttons">
-                    <select id="game-select" v-model="by">
+                    <select class="steam-btn" id="game-select" v-model="by">
                         <option value="name">Nom</option>
                         <option value="price">Prix</option>
                     </select>
-                    <input v-model="search" placeholder="Search..." />
-                    <button class="steam-btn">Se connecter</button>
-                    <button class="steam-btn steam-btn-blue">S’inscrire</button>
+                    <input class="steam-btn" v-model="search" placeholder="Search..." />
+                    <a href="http://localhost:3000/signin"><button class="steam-btn">Se connecter</button></a>
+                    <a href="http://localhost:3000/signup"><button class="steam-btn steam-btn-blue">S’inscrire</button></a>
                 </div>
             </header>
 

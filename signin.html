@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <title>plateforme de jeu</title>
+
+    <link rel="stylesheet" href="./front/assets/css/style.css">
+
+    <!-- Vue 3 CDN -->
+    <script src="https://unpkg.com/vue@3.4.21/dist/vue.global.js"></script>
+</head>
+<body>
+<div id="app">
+    <header class="steam-header">
+        <div class="steam-logo">Plateforme de jeux</div>
+
+        <div class="steam-buttons">
+            <a href="http://localhost:3000"><button class="steam-btn">Accueil</button></a>
+            <a href="http://localhost:3000/signup"><button class="steam-btn steam-btn-blue">S’inscrire</button></a>
+        </div>
+    </header>
+    <form class="steam-form" @submit.prevent="">
+
+    </form>
+</div>
+<!--JS-->
+<script src="./front/signin.js"></script>
+<script>
+    App.mount('#app');
+</script>
+</body>
+</html>
