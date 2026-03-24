@@ -89,3 +89,10 @@ INSERT INTO Users_has_DLCs (user_id, DLC_id) VALUES
                                                  (2, 1),
                                                  (3, 3),
                                                  (4, 4);
+
+-- -----------------------------------------------------
+-- Api_Users
+-- -----------------------------------------------------
+INSERT INTO API_Users (username, password) VALUES
+                                                 ('admin', '$2b$10$Pc1BVX67Nna29TbOlA.bGerpvqZpiMIiAlXidk6iguU5ZXPguZlgy'),     #Pa$$w0rd
+                                                 ('thierry', '$2b$10$ir3UkKn.Hq4Ladsvvh/YbOApUslqpUmq7TwDAfaS2hPrXCzu/kMP6');   #Pa$$w0rd
