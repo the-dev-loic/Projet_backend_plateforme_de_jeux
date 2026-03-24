@@ -20,7 +20,12 @@
         </div>
     </header>
     <form class="steam-form" @submit.prevent="">
-
+        <h1>Se connecter</h1>
+        <label for="username">Pseudo</label>
+        <input type="text" id="username" v-model="username" required/>
+        <label for="password">Mot de passe</label>
+        <input type="password" id="password" v-model="password" required/>
+        <button type="submit">Login</button>
     </form>
 </div>
 <!--JS-->
