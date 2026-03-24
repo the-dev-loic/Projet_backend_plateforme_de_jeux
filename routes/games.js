@@ -85,24 +85,24 @@ gamesRouter.post("/", async (req, res) => {
 
         // Error handling
         if (publisher_id == null || name == null || price == null) {
-            return res.status(400).json({error: "Un ou plusieurs paramètres indispensables sont vides."});
+            return res.status(400).json({error: "At least one mandatory parameter is empty."});
         }
 
         if (isNaN(publisher_id) || publisher_id < 1) {
-            return res.status(400).json({error: "L'id de l'éditeur doit être un nombre entier positif."});
+            return res.status(400).json({error: "The id of the publisher must be a positive integer."});
         }
 
         if (name.length > 100) {
-            return res.status(400).json({error: "Le nom du jeu ne peut pas dépasser 100 caractères."});
+            return res.status(400).json({error: "The name of the game cannot be longer than 100 characters."});
         }
 
         if (description.length > 255) {
-            return res.status(400).json({error: "La description du jeu ne peut pas dépasser 255 " +
-                    "caractères."});
+            return res.status(400).json({error: "The description of the DLC cannot be longer than 255 " +
+                    "characters."});
         }
 
         if (isNaN(price) || price < 0) {
-            return res.status(400).json({error: "Le prix du jeu doit être un nombre positif ou zéro."})
+            return res.status(400).json({error: "The price of the game must be a positive number, or zero."})
         }
 
         //  Creating the entry
@@ -228,7 +228,7 @@ gamesRouter.get("/:id", async (req, res) => {
     try {
         // Handling errors with the id parameter
         if (isNaN(req.params.id) || req.params.id < 1) {
-            return res.status(400).json({error: "L'id doit être un nombre entier positif."})
+            return res.status(400).json({error: "The id must be a positive integer."})
         }
 
         // Reading the entry
@@ -315,7 +315,7 @@ gamesRouter.put("/:id", async (req, res) => {
     try {
         // Handling errors with the id parameter
         if (isNaN(req.params.id) || req.params.id < 1) {
-            return res.status(400).json({error: "L'id doit être un nombre entier positif."});
+            return res.status(400).json({error: "The id must be a positive integer."})
         }
 
         // Variables
@@ -325,24 +325,24 @@ gamesRouter.put("/:id", async (req, res) => {
 
         // Error handling
         if (publisher_id == null || name == null || price == null) {
-            return res.status(400).json({error: "Un ou plusieurs paramètres indispensables sont vides."});
+            return res.status(400).json({error: "At least one mandatory parameter is empty."});
         }
 
         if (isNaN(publisher_id) || publisher_id < 1) {
-            return res.status(400).json({error: "L'id de l'éditeur doit être un nombre entier positif."});
+            return res.status(400).json({error: "The id of the publisher must be a positive integer."});
         }
 
         if (name.length > 100) {
-            return res.status(400).json({error: "Le nom du jeu ne peut pas dépasser 100 caractères."});
+            return res.status(400).json({error: "The name of the game cannot be longer than 100 characters."});
         }
 
         if (description.length > 255) {
-            return res.status(400).json({error: "La description du jeu ne peut pas dépasser 255 " +
-                    "caractères."});
+            return res.status(400).json({error: "The description of the game cannot be longer than 255 " +
+                    "characters."});
         }
 
         if (isNaN(price) || price <= 0) {
-            return res.status(400).json({error: "Le prix du jeu doit être un nombre positif ou zéro."})
+            return res.status(400).json({error: "The price of the DLC must be a positive number, or zero."})
         }
 
         // Updating the entry
@@ -384,12 +384,12 @@ gamesRouter.delete("/:id", async (req, res) => {
     try {
         // Handling errors with the id parameter
         if (isNaN(req.params.id) || req.params.id < 1) {
-            return res.status(400).json({error: "L'id doit être un nombre entier positif."});
+            return res.status(400).json({error: "The id must be a positive integer."});
         }
 
         // Deleting the entry
         await CRUD.deleteFromEntity("games", req.params.id);
-        res.status(204).json({message: "Jeu supprimé avec succès."});
+        res.status(204).json({message: "game deleted successfully"});
     }
     catch (error) {
         res.status(500).json({error: error.message});
