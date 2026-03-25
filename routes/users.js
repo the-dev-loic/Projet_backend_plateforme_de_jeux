@@ -15,63 +15,76 @@ import {hashPassword} from "../functions/hash.js";
 const router = express.Router();
 
 /**
-* @swagger
-* /api/users:
-*   post:
-*     tags:
-*       - Users
-*     summary: Create a users
-*     description: Create a new users.
-*     requestBody:
-*       required: true
-*       content:
-*         application/json:
-*           schema:
-*             type: object
-*             required:
-*               - username
-*               - email
-*               - password
-*             properties:
-*               username:
-*                 type: string
-*                 example: john doe
-*               email:
-*                 type: string
-*                 example: john.doe@exemple.com
-*               password:
-*                 type: string
-*                 example: Pa$$w0rd
-*     responses:
-*       201:
-*         description: users created successfully
-*         content:
-*           application/json:
-*             schema:
-*               type: object
-*               properties:
-*                 id:
-*                   type: integer
-*                 username:
-*                   type: integer
-*                 email:
-*                   type: string
-*                 password:
-*                   type: string
-*       400:
-*         description: Bad request
-*       500:
-*         description: Internal server error
-*/
+ * @swagger
+ * /api/users:
+ *   post:
+ *     tags:
+ *       - Users
+ *     summary: Create a users
+ *     description: Create a new users.
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             required:
+ *               - username
+ *               - email
+ *               - password
+ *             properties:
+ *               username:
+ *                 type: string
+ *                 example: john doe
+ *               email:
+ *                 type: string
+ *                 example: john.doe@exemple.com
+ *               password:
+ *                 type: string
+ *                 example: Pa$$w0rd
+ *     responses:
+ *       201:
+ *         description: users created successfully
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 id:
+ *                   type: integer
+ *                 username:
+ *                   type: integer
+ *                 email:
+ *                   type: string
+ *                 password:
+ *                   type: string
+ *       400:
+ *         description: Bad request
+ *       500:
+ *         description: Internal server error
+ */
 router.post('/', async (req, res) => {
-    /*if (data[0] === "" || !data[0] || data[0].length > 45) {
+    try {
+    if (req.body.username === "" || !req.body.username || req.body.username.length > 45) {
         res.status(400).json({error: "invalid name, name need to be under 45 characters"});
         return;
-    }*/
+    }
+    if (req.body.email === "" || !req.body.email || req.body.email.length > 255) {
+        res.status(400).json({error: "invalid email, email need to be under 45 characters"});
+        return;
+    }
+    if (req.body.password === "" || !req.body.password || req.body.password.length > 64) {
+        res.status(400).json({error: "invalid password, password need to be under 45 characters"});
+        return;
+    }
     req.body.password = await hashPassword(req.body.password, 10);
     const data = Object.values(req.body);
     let response = await CRUD.createInEntity("users", ['username', 'email', 'password'], data);
     res.status(201).json(response)
+    }
+    catch (error) {
+        res.status(500).json({error: error.message});
+    }
 })
 
 /**
@@ -177,6 +190,7 @@ router.get('/', async (req, res) => {
  *         description: Internal server error
  */
 router.get('/:id', async (req, res) => {
+    try {
     const id = parseInt(req.params.id);
     if (!(id > 0)) {
         res.status(400).json({error: "id should be a positive integer"});
@@ -184,46 +198,50 @@ router.get('/:id', async (req, res) => {
     }
     let users = await CRUD.getFromEntityById("users", id);
     res.status(200).json(users)
+    }
+    catch (error) {
+        res.status(500).json({error: error.message});
+    }
 })
 
 /**
-* @swagger
-* /api/users/{id}:
-*   put:
-*     tags:
-*       - Users
-*     summary: Edit a users
-*     description: Edit a users by its ID.
-*     parameters:
-*       - in: path
-*         name: id
-*         schema:
-*           type: integer
-*           minimum: 1
-*         description: The id of the users to update
-*     requestBody:
-*       required: true
-*       content:
-*         application/json:
-*           schema:
-*             type: object
-*             required:
-*               - username
-*               - email
-*               - password
-*             properties:
-*               username:
-*                 type: string
-*                 example: John Doe
-*               email:
-*                 type: string
-*                 example: john.doe@exemple.com
-*               password:
-*                 type: string
-*                 example: Pa$$w0rd
-*     responses:
-*       200:
-*         description: Successfully edited the users
+ * @swagger
+ * /api/users/{id}:
+ *   put:
+ *     tags:
+ *       - Users
+ *     summary: Edit a users
+ *     description: Edit a users by its ID.
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         schema:
+ *           type: integer
+ *           minimum: 1
+ *         description: The id of the users to update
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             required:
+ *               - username
+ *               - email
+ *               - password
+ *             properties:
+ *               username:
+ *                 type: string
+ *                 example: John Doe
+ *               email:
+ *                 type: string
+ *                 example: john.doe@exemple.com
+ *               password:
+ *                 type: string
+ *                 example: Pa$$w0rd
+ *     responses:
+ *       200:
+ *         description: Successfully edited the users
  *         content:
  *           application/json:
  *             schema:
@@ -237,29 +255,40 @@ router.get('/:id', async (req, res) => {
  *                   type: string
  *                 password:
  *                   type: string
-*       400:
-*         description: Bad request
-*       404:
-*         description: users not found
-*       500:
-*         description: Internal server error
-*/
+ *       400:
+ *         description: Bad request
+ *       404:
+ *         description: users not found
+ *       500:
+ *         description: Internal server error
+ */
 router.put('/:id', async (req, res) => {
-    res.json(req.body);
-    /*
-    if (data[0] === "" || data[0].length > 45) {
+    try {
+    if (req.body.username === "" || !req.body.username || req.body.username.length > 45) {
         res.status(400).json({error: "invalid name, name need to be under 45 characters"});
+        return;
+    }
+    if (req.body.email === "" || !req.body.email || req.body.email.length > 255) {
+        res.status(400).json({error: "invalid email, email need to be under 45 characters"});
+        return;
+    }
+    if (req.body.password === "" || !req.body.password || req.body.password.length > 64) {
+        res.status(400).json({error: "invalid password, password need to be under 45 characters"});
         return;
     }
     const id = parseInt(req.params.id);
     if (!(id > 0)) {
         res.status(400).json({error: "id should be a positive integer"});
         return;
-    }*/
+    }
     req.body.password = await hashPassword(req.body.password, 10);
     const data = Object.values(req.body);
     let response = await CRUD.updateInEntity("users", id,['username', 'email', 'password'], data)
     res.status(200).json(response)
+    }
+    catch (error) {
+        res.status(500).json({error: error.message});
+    }
 })
 
 /**
@@ -289,6 +318,7 @@ router.put('/:id', async (req, res) => {
  *           description: Internal server error
  */
 router.delete('/:id', async (req, res) => {
+    try {
     const id = parseInt(req.params.id);
     if (!(id > 0)) {
         res.status(400).json({error: "id should be a positive integer"});
@@ -296,6 +326,10 @@ router.delete('/:id', async (req, res) => {
     }
     let response = await CRUD.deleteFromEntity("users", id)
     res.status(204).json(response)
+    }
+    catch (error) {
+        res.status(500).json({error: error.message});
+    }
 })
 
 export default router;

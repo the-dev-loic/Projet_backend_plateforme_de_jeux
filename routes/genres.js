@@ -50,6 +50,7 @@ import { CRUD } from "../database/database-connection.js";
  *         description: Internal server error
  */
 router.post('/', async (req, res) => {
+    try {
     const data = Object.values(req.body);
     if (data[0] === "" || !data[0] || data[0].length > 45) {
         res.status(400).json({error: "invalid name, name need to be under 45 characters"});
@@ -57,6 +58,10 @@ router.post('/', async (req, res) => {
     }
     let response = await CRUD.createInEntity("genres", ['name'], data);
     res.status(201).json(response)
+    }
+    catch (error) {
+        res.status(500).json({error: error.message});
+    }
 })
 
 
@@ -107,6 +112,7 @@ router.post('/', async (req, res) => {
  *         description: Internal server error
  */
 router.get('/', async (req, res) => {
+    try {
     const column = req.query.column;
     const filter = req.query.filter;
     const limit = parseInt(req.query.limit);
@@ -117,6 +123,10 @@ router.get('/', async (req, res) => {
     }
     let genres = await CRUD.getAllFromEntity("genres", column, filter, limit);
     res.status(200).json(genres)
+    }
+    catch (error) {
+        res.status(500).json({error: error.message});
+    }
 })
 
 
@@ -156,6 +166,7 @@ router.get('/', async (req, res) => {
  *         description: Internal server error
  */
 router.get('/:id', async (req, res) => {
+    try {
     const id = parseInt(req.params.id);
     if (!(id > 0)) {
         res.status(400).json({error: "id should be a positive integer"});
@@ -163,6 +174,10 @@ router.get('/:id', async (req, res) => {
     }
     let genres = await CRUD.getFromEntityById("genres", id);
     res.status(200).json(genres)
+    }
+    catch (error) {
+        res.status(500).json({error: error.message});
+    }
 })
 
 
@@ -213,18 +228,23 @@ router.get('/:id', async (req, res) => {
  *         description: Internal server error
  */
 router.put('/:id', async (req, res) => {
-    const data = Object.values(req.body);
-    if (data[0] === "" || !data[0] || data[0].length > 45) {
-        res.status(400).json({error: "invalid name, name need to be under 45 characters"});
-        return;
+    try {
+        const data = Object.values(req.body);
+        if (data[0] === "" || !data[0] || data[0].length > 45) {
+            res.status(400).json({error: "invalid name, name need to be under 45 characters"});
+            return;
+        }
+        const id = parseInt(req.params.id);
+        if (!(id > 0)) {
+            res.status(400).json({error: "id should be a positive integer"});
+            return;
+        }
+        let response = await CRUD.updateInEntity("genres", id, ['name'], data);
+        res.status(200).json(response);
     }
-    const id = parseInt(req.params.id);
-    if (!(id > 0)) {
-        res.status(400).json({error: "id should be a positive integer"});
-        return;
+    catch (error) {
+        res.status(500).json({error: error.message});
     }
-    let response = await CRUD.updateInEntity("genres", id, ['name'], data);
-    res.status(200).json(response);
 })
 
 
@@ -264,13 +284,18 @@ router.put('/:id', async (req, res) => {
  *         description: Internal server error
  */
 router.delete('/:id', async (req, res) => {
-    const id = parseInt(req.params.id);
-    if (!(id > 0)) {
-        res.status(400).json({error: "id should be a positive integer"});
-        return;
+    try {
+        const id = parseInt(req.params.id);
+        if (!(id > 0)) {
+            res.status(400).json({error: "id should be a positive integer"});
+            return;
+        }
+        let response = await CRUD.deleteFromEntity("genres", id)
+        res.status(204).json(response)
     }
-    let response = await CRUD.deleteFromEntity("genres", id)
-    res.status(204).json(response)
+    catch (error) {
+        res.status(500).json({error: error.message});
+    }
 })
 
 export default router;
