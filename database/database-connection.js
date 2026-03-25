@@ -5,7 +5,7 @@
  * Creation date :          11.02.2026
  * Modified by :            Thierry Perroud
  * Modification date :      25.03.2026
- * Version :                0.1.2
+ * Version :                0.1.3
  **********************************************************************************************************************/
 "use strict";
 
@@ -21,8 +21,8 @@ import bcrypt from 'bcrypt';
 // MySQL connection instance to the database
 const connection = await mysql2.createConnection({
     host:       "localhost",
-    user:       "API",                     // Needs to be configured
-    password:   "1234",                     // Needs to be configured
+    user:       "",                     // Needs to be configured
+    password:   "",                     // Needs to be configured
     port:       3306,
     database:   "videogames_platform"
 });
@@ -88,7 +88,7 @@ const CRUD = {
 
     /* SPECIFIC TO AUTH ***********************************************************************************************/
     getAPIUser: async (login) => {
-        // Example query: SELECT * from api_users WHERE username = myUsername
+        // Example query: SELECT * from api_users WHERE username = "myUsername"
         const [row] = await connection.query(`SELECT * FROM api_users WHERE username = ?`, [login]);
         return row[0]
     },
