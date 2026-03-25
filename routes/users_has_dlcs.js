@@ -3,12 +3,14 @@
  * Description :            route for users_has_dlcs table
  * Author :                 Loïc Roux
  * Creation date :          04.03.2026
- * Modified by :            -Loïc Roux
- * Modification date :      -11.03.2026
- * Version :                0.1.1
+ * Modified by :            Thierry Perroud
+ * Modification date :      25.03.2026
+ * Version :                0.1.2
  **********************************************************************************************************************/
 import express from 'express';
 const router = express.Router();
+
+import auth from "../auth/auth.js"
 import { CRUD } from "../database/database-connection.js";
 
 
@@ -44,7 +46,7 @@ import { CRUD } from "../database/database-connection.js";
  *       500:
  *         description: Internal server error
  */
-router.post('/', async (req, res) => {
+router.post('/', auth, async (req, res) => {
     try {
     if (!(req.body.user_id > 0) || !(req.body.DLC_id > 0)) {
         res.status(400).json({ error: "invalid data, user_id and DLC_id should be a positive integer" });
@@ -97,7 +99,7 @@ router.post('/', async (req, res) => {
  *       500:
  *         description: Internal server error
  */
-router.get('/', async (req, res) => {
+router.get('/', auth, async (req, res) => {
     try {
     const column = req.query.column;
     const filter = req.query.filter;
@@ -142,7 +144,7 @@ router.get('/', async (req, res) => {
  *       500:
  *         description: Internal server error
  */
-router.get('/:id', async (req, res) => {
+router.get('/:id', auth, async (req, res) => {
     try {
     const id = parseInt(req.params.id);
     if (!(id > 0)) {
@@ -200,7 +202,7 @@ router.get('/:id', async (req, res) => {
  *       500:
  *         description: Internal server error
  */
-router.put('/:id', async (req, res) => {
+router.put('/:id', auth, async (req, res) => {
     try {
     if (!(req.body.user_id > 0) || !(req.body.DLC_id > 0)) {
         res.status(400).json({ error: "invalid data, user_id and DLC_id should be a positive integer" });
@@ -247,7 +249,7 @@ router.put('/:id', async (req, res) => {
  *       500:
  *         description: Internal server error
  */
-router.delete('/:id', async (req, res) => {
+router.delete('/:id', auth, async (req, res) => {
     try {
     const id = parseInt(req.params.id);
     if (!(id > 0)) {
