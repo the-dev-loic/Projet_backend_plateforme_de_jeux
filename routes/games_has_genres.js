@@ -57,13 +57,18 @@ import { CRUD } from "../database/database-connection.js";
  *         description: Internal server error
  */
 router.post('/', auth, async (req, res) => {
-    if (!(req.body.game_id > 0) || !(req.body.genre_id > 0)) {
-        res.status(400).json({error: "invalid data, game_id and genre_id should be a positive integer"});
-        return;
+    try {
+        if (!(req.body.game_id > 0) || !(req.body.genre_id > 0)) {
+            res.status(400).json({error: "invalid data, game_id and genre_id should be a positive integer"});
+            return;
+        }
+        const data = Object.values(req.body);
+        let response = await CRUD.createInEntity("games_has_genres", ['game_id', 'genre_id'], data);
+        res.status(201).json(response)
     }
-    const data = Object.values(req.body);
-    let response = await CRUD.createInEntity("games_has_genres", ['game_id', 'genre_id'], data);
-    res.status(201).json(response)
+    catch (error) {
+        res.status(500).json({error: error.message});
+    }
 })
 
 
@@ -113,16 +118,21 @@ router.post('/', auth, async (req, res) => {
  *         description: Internal server error
  */
 router.get('/', auth, async (req, res) => {
+    try {
     const column = req.query.column;
     const filter = req.query.filter;
     const limit = parseInt(req.query.limit);
 
-    if (!(parseInt(limit) > 0) && limit) {
-        res.status(400).json({error: "limit invalid number"});
-        return;
+        if (!(parseInt(limit) > 0) && limit) {
+            res.status(400).json({error: "limit invalid number"});
+            return;
+        }
+        let genres = await CRUD.getAllFromEntity("games_has_genres", column, filter, limit);
+        res.status(200).json(genres)
     }
-    let genres = await CRUD.getAllFromEntity("games_has_genres", column, filter, limit);
-    res.status(200).json(genres)
+    catch (error) {
+        res.status(500).json({error: error.message});
+    }
 })
 
 
@@ -164,13 +174,18 @@ router.get('/', auth, async (req, res) => {
  *         description: Internal server error
  */
 router.get('/:id', auth, async (req, res) => {
-    const id = parseInt(req.params.id);
-    if (!(id > 0)) {
-        res.status(400).json({error: "id should be a positive integer"});
-        return;
+    try {
+        const id = parseInt(req.params.id);
+        if (!(id > 0)) {
+            res.status(400).json({error: "id should be a positive integer"});
+            return;
+        }
+        let genres = await CRUD.getFromEntityById("games_has_genres", id);
+        res.status(200).json(genres)
     }
-    let genres = await CRUD.getFromEntityById("games_has_genres", id);
-    res.status(200).json(genres)
+    catch (error) {
+        res.status(500).json({error: error.message});
+    }
 })
 
 
@@ -227,18 +242,23 @@ router.get('/:id', auth, async (req, res) => {
  *         description: Internal server error
  */
 router.put('/:id', auth, async (req, res) => {
-    if (!(req.body.game_id > 0) || !(req.body.genre_id > 0)) {
-        res.status(400).json({error: "invalid data, game_id and genre_id should be a positive integer"});
-        return;
+    try {
+        if (!(req.body.game_id > 0) || !(req.body.genre_id > 0)) {
+            res.status(400).json({error: "invalid data, game_id and genre_id should be a positive integer"});
+            return;
+        }
+        const data = Object.values(req.body);
+        const id = parseInt(req.params.id);
+        if (!(id > 0)) {
+            res.status(400).json({error: "id should be a positive integer"});
+            return;
+        }
+        let response = await CRUD.updateInEntity("games_has_genres", id, ['game_id', 'genre_id'], data);
+        res.status(200).json(response);
     }
-    const data = Object.values(req.body);
-    const id = parseInt(req.params.id);
-    if (!(id > 0)) {
-        res.status(400).json({error: "id should be a positive integer"});
-        return;
-    }
-    let response = await CRUD.updateInEntity("games_has_genres", id, ['game_id', 'genre_id'], data);
-    res.status(200).json(response);
+    catch (error) {
+            res.status(500).json({error: error.message});
+        }
 })
 
 
@@ -269,13 +289,18 @@ router.put('/:id', auth, async (req, res) => {
  *         description: Internal server error
  */
 router.delete('/:id', auth, async (req, res) => {
-    const id = parseInt(req.params.id);
-    if (!(id > 0)) {
-        res.status(400).json({error: "id should be a positive integer"});
-        return;
+    try {
+        const id = parseInt(req.params.id);
+        if (!(id > 0)) {
+            res.status(400).json({error: "id should be a positive integer"});
+            return;
+        }
+        let response = await CRUD.deleteFromEntity("games_has_genres", id)
+        res.status(204).json(response)
     }
-    let response = await CRUD.deleteFromEntity("games_has_genres", id)
-    res.status(204).json(response)
+    catch (error) {
+        res.status(500).json({error: error.message});
+    }
 })
 
 
