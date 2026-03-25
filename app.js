@@ -4,8 +4,8 @@
  * Author :                 Cédric Jankiewicz
  * Creation date :          04.02.2026
  * Modified by :            Thierry Perroud
- * Modification date :      24.02.2026
- * Version :                0.1.4
+ * Modification date :      25.03.2026
+ * Version :                0.1.5
  **********************************************************************************************************************/
 "use strict";
 
@@ -16,6 +16,7 @@ import express from 'express';
 import swaggerUi from 'swagger-ui-express';
 import swaggerSpec from "./swagger.js";
 
+import apiUsersRouter from "./routes/api_users.js"
 import gamesRouter from "./routes/games.js";
 import dlcsRouter from "./routes/dlcs.js";
 import usersRouter from "./routes/users.js";
@@ -46,6 +47,7 @@ app.get('/', (req, res) => {
 /***********************************************************************************************************************
  *  Routers
  **********************************************************************************************************************/
+app.use('/api', apiUsersRouter);
 app.use('/api/games', gamesRouter);
 app.use('/api/dlcs', dlcsRouter);
 app.use('/api/users', usersRouter);

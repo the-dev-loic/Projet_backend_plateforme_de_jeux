@@ -3,12 +3,14 @@
  * Description :            route for genres table
  * Author :                 Cédric Jankiewicz
  * Creation date :          24.02.2026
- * Modified by :            Cédric Jankiewicz
- * Modification date :      25.02.2026
- * Version :                0.1.0
+ * Modified by :            Thierry Perroud
+ * Modification date :      25.03.2026
+ * Version :                0.1.1
  **********************************************************************************************************************/
 import express from 'express';
 const router = express.Router();
+
+import auth from "../auth/auth.js";
 import { CRUD } from "../database/database-connection.js";
 
 /**
@@ -143,7 +145,7 @@ import { CRUD } from "../database/database-connection.js";
  *         description: Internal server error
  */
 
-router.get('/', async (req, res) => {
+router.get('/', auth, async (req, res) => {
     const searchName = req.query.name; // get param 'name'
     const limit = req.query.limit; // get param 'limit'
     if (!(parseInt(limit) > 0) && limit) {
@@ -154,7 +156,7 @@ router.get('/', async (req, res) => {
     res.status(200).json(genres)
 })
 
-router.get('/:id', async (req, res) => {
+router.get('/:id', auth, async (req, res) => {
     const id = parseInt(req.params.id);
     if (!(id > 0)) {
         res.status(400).json({error: "id should be a positive integer"});
@@ -164,7 +166,7 @@ router.get('/:id', async (req, res) => {
     res.status(200).json(genres)
 })
 
-router.post('/', async (req, res) => {
+router.post('/', auth, async (req, res) => {
     res.json(req.body);
     const data = Object.values(req.body);
     if (data[0] === "" || !data[0] || data[0].length > 45) {
@@ -175,7 +177,7 @@ router.post('/', async (req, res) => {
     res.status(200).json(response)
 })
 
-router.put('/:id', async (req, res) => {
+router.put('/:id', auth, async (req, res) => {
     res.json(req.body);
     const data = Object.values(req.body);
     if (data[0] === "" || data[0].length > 45) {
@@ -191,7 +193,7 @@ router.put('/:id', async (req, res) => {
     res.status(200).json(response)
 })
 
-router.delete('/:id', async (req, res) => {
+router.delete('/:id', auth, async (req, res) => {
     const id = parseInt(req.params.id);
     if (!(id > 0)) {
         res.status(400).json({error: "id should be a positive integer"});

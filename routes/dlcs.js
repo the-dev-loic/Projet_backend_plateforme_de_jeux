@@ -3,9 +3,9 @@
  * Description :            router for the DLCs CRUD routes
  * Author :                 Thierry Perroud
  * Creation date :          04.03.2026
- * Modified by :
- * Modification date :
- * Version :                0.1.0
+ * Modified by :            Thierry Perroud
+ * Modification date :      25.03.2026
+ * Version :                0.1.1
  **********************************************************************************************************************/
 "use strict";
 
@@ -13,6 +13,8 @@
  *  Imports
  **********************************************************************************************************************/
 import express from "express";
+
+import auth from "../auth/auth.js";
 import { CRUD } from "../database/database-connection.js";
 
 /***********************************************************************************************************************
@@ -75,7 +77,7 @@ const dlcsRouter = express.Router();  // Router for http://localhost:3000/api/dl
  *       500:
  *         description: Internal server error.
  */
-dlcsRouter.post("/", async (req, res) => {
+dlcsRouter.post("/", auth, async (req, res) => {
     try {
         // Variables
         const columns = ["game_id", "name", "description", "price"];
@@ -159,7 +161,7 @@ dlcsRouter.post("/", async (req, res) => {
  *       500:
  *         description: Internal server error.
  */
-dlcsRouter.get("/", async (req, res) => {
+dlcsRouter.get("/", auth, async (req, res) => {
     try {
         // Variables
         const column = req.query.column;
@@ -215,7 +217,7 @@ dlcsRouter.get("/", async (req, res) => {
  *       500:
  *         description: Internal server error.
  */
-dlcsRouter.get("/:id", async (req, res) => {
+dlcsRouter.get("/:id", auth, async (req, res) => {
     try {
         // Handling errors with the id parameter
         if (isNaN(req.params.id) || req.params.id < 1) {
@@ -300,7 +302,7 @@ dlcsRouter.get("/:id", async (req, res) => {
  *       500:
  *         description: Internal server error.
  */
-dlcsRouter.put("/:id", async (req, res) => {
+dlcsRouter.put("/:id", auth, async (req, res) => {
     try {
         // Handling errors with the id parameter
         if (isNaN(req.params.id) || req.params.id < 1) {
@@ -365,7 +367,7 @@ dlcsRouter.put("/:id", async (req, res) => {
  *       400:
  *         description: The id must be a positive integer.
  */
-dlcsRouter.delete("/:id", async (req, res) => {
+dlcsRouter.delete("/:id", auth, async (req, res) => {
     try {
         // Handling errors with the id parameter
         if (isNaN(req.params.id) || req.params.id < 1) {

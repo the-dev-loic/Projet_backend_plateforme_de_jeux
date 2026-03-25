@@ -4,8 +4,8 @@
  * Author :                 Thierry Perroud
  * Creation date :          25.02.2026
  * Modified by :            Thierry Perroud
- * Modification date :      03.03.2026
- * Version :                0.1.1
+ * Modification date :      25.03.2026
+ * Version :                0.1.2
  **********************************************************************************************************************/
 "use strict";
 
@@ -13,6 +13,8 @@
  *  Imports
  **********************************************************************************************************************/
 import express from "express";
+
+import auth from "../auth/auth.js";
 import { CRUD } from "../database/database-connection.js";
 
 /***********************************************************************************************************************
@@ -75,7 +77,7 @@ const gamesRouter = express.Router();  // Router for http://localhost:3000/api/G
  *       400:
  *         description: Un ou plusieurs paramètres indispensables sont vides. | L'id de l'éditeur doit être un nombre entier positif. | Le nom du jeu ne peut pas dépasser 100 caractères. | la description du jeu ne doit pas dépasser les 255 caractères. | Le prix du jeu doit être un nombre positif ou zéro.
  */
-gamesRouter.post("/", async (req, res) => {
+gamesRouter.post("/", auth, async (req, res) => {
     try {
         // Variables
         const columns = ["publisher_id", "name", "description", "price"];
@@ -157,7 +159,7 @@ gamesRouter.post("/", async (req, res) => {
  *                 price:
  *                   type: number
  */
-gamesRouter.get("/", async (req, res) => {
+gamesRouter.get("/", auth, async (req, res) => {
     try {
         // Variables
         const column = req.query.column;
@@ -211,7 +213,7 @@ gamesRouter.get("/", async (req, res) => {
  *       404:
  *         description: Jeu non trouvé.
  */
-gamesRouter.get("/:id", async (req, res) => {
+gamesRouter.get("/:id", auth, async (req, res) => {
     try {
         // Handling errors with the id parameter
         if (isNaN(req.params.id) || req.params.id < 1) {
@@ -295,7 +297,7 @@ gamesRouter.get("/:id", async (req, res) => {
  *       400:
  *         description: Un ou plusieurs paramètres indispensables sont vides. | L'id de l'éditeur doit être un nombre entier positif. | Le nom du jeu ne peut pas dépasser 100 caractères. | la description du jeu ne doit pas dépasser les 255 caractères. | Le prix du jeu doit être un nombre positif ou zéro.
  */
-gamesRouter.put("/:id", async (req, res) => {
+gamesRouter.put("/:id", auth, async (req, res) => {
     try {
         // Handling errors with the id parameter
         if (isNaN(req.params.id) || req.params.id < 1) {
@@ -360,7 +362,7 @@ gamesRouter.put("/:id", async (req, res) => {
  *       400:
  *         description: L'id doit être un nombre entier positif.
  */
-gamesRouter.delete("/:id", async (req, res) => {
+gamesRouter.delete("/:id", auth, async (req, res) => {
     try {
         // Handling errors with the id parameter
         if (isNaN(req.params.id) || req.params.id < 1) {
