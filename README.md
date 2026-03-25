@@ -10,14 +10,19 @@
    npm install
    ```
 ### 3. Installer la base de donnée
-   lancer le script mysql `database/create_db.sql`
+   - lancer le script mysql `database/create_db.sql`
+   - ajouter les credentials dans `database/database-connection.js`
 
-### 4. Lancer l'api
+### 4. Setup token
+   ajouter une clé privée dans `auth/private_key.js`
+
+### 5. Lancer l'api
    ```bash
    npm run start
    ```
-### 5. créer un compte
+### 6. créer un compte
    requête sur `http://localhost:3000/api/signin`
+   
    exemple body
    ```bash
    {
@@ -25,8 +30,9 @@
   "password": "Pa$$w0rd"
    }
    ```
-### 6. se connecter
+### 7. se connecter
    requête sur `http://localhost:3000/api/login`
+   
    exemple body
    ```bash
    {
