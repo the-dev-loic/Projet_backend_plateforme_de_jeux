@@ -13,11 +13,13 @@ import request from 'supertest';
 export function testCrudRoutes(app, basePath, validBody, updateBody) {
     describe(`${basePath} CRUD`, () => {
 
-        let createdId = 1;
+        let createdId;
 
         test("POST create", async () => {
             const res = await request(app).post(basePath).send(validBody);
-            expect(res.statusCode).toBe(200);
+            expect(res.statusCode).toBe(201);
+            createdId = res.body.id;
+            expect(createdId).toBeDefined();
         });
 
         test("POST invalid body", async () => {
@@ -47,7 +49,7 @@ export function testCrudRoutes(app, basePath, validBody, updateBody) {
 
         test("DELETE", async () => {
             const res = await request(app).delete(`${basePath}/${createdId}`);
-            expect(res.statusCode).toBe(200);
+            expect(res.statusCode).toBe(204);
         });
 
     });

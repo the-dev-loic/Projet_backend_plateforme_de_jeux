@@ -13,15 +13,14 @@ const router = express.Router();
 import auth from "../auth/auth.js";
 import { CRUD } from "../database/database-connection.js";
 
-
 /**
  * @swagger
  * /api/games_has_genres:
  *   post:
  *     tags:
- *       - GameHasGenres
- *     summary: Create a game_has_genre
- *     description: Create a new game_has_genre.
+ *       - GamesHasGenres
+ *     summary: Create a games has genres
+ *     description: Create a new games has genres
  *     requestBody:
  *       required: true
  *       content:
@@ -37,10 +36,21 @@ import { CRUD } from "../database/database-connection.js";
  *                 example: 1
  *               genre_id:
  *                 type: integer
- *                 exemple: 4
+ *                 example: 1
  *     responses:
- *       200:
- *         description: genre created successfully
+ *       201:
+ *         description: users created successfully
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 id:
+ *                   type: integer
+ *                 game_id:
+ *                   type: integer
+ *                 genre_id:
+ *                   type: integer
  *       400:
  *         description: Bad request
  *       500:
@@ -53,40 +63,48 @@ router.post('/', auth, async (req, res) => {
     }
     const data = Object.values(req.body);
     let response = await CRUD.createInEntity("games_has_genres", ['game_id', 'genre_id'], data);
-    res.status(200).json(response)
+    res.status(201).json(response)
 })
 
 
 /**
  * @swagger
  * /api/games_has_genres:
- *  get:
+ *   get:
  *     tags:
- *       - GameHasGenres
- *     summary: Get all games_has_genres
- *     description: Retrieve a list of games_has_genres.
+ *       - GamesHasGenres
+ *     summary: Get all games has genres
+ *     description: Retrieve a list of games has genres
  *     parameters:
  *       - in: query
- *         name: column
+ *         name: name
+ *         required: false
  *         schema:
  *           type: string
- *         description: the column to filter by
- *         example: game_id
- *       - in: query
- *         name: filter
- *         schema:
- *           type: string
- *         description: the filter to search by
- *         example: 2
+ *         description: Search users by Move File…
+ *         example: one
  *       - in: query
  *         name: limit
+ *         required: false
  *         schema:
  *           type: integer
- *         description: Max number of result
+ *           minimum: 1
+ *         description: Number of results to return
  *         example: 10
  *     responses:
  *       200:
- *         description: Successfully retrieved games_has_genres
+ *         description: Liste des utilisateur
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 id:
+ *                   type: integer
+ *                 game_id:
+ *                   type: integer
+ *                 genre_id:
+ *                   type: integer
  *       400:
  *         description: Bad request
  *       404:
@@ -113,24 +131,35 @@ router.get('/', auth, async (req, res) => {
  * /api/games_has_genres/{id}:
  *   get:
  *     tags:
- *       - GameHasGenres
- *     summary: Get a single game_has_genre
- *     description: Retrieve a specific game_has_genre by its ID.
+ *       - GamesHasGenres
+ *     summary: Get a single game has genre
+ *     description: Retrieve a specific game has genre by its ID
  *     parameters:
  *       - in: path
  *         name: id
  *         required: true
  *         schema:
  *           type: string
- *         description: The ID of the game_has_genre
+ *         description: The ID of the game has genre
  *         example: 1
  *     responses:
  *       200:
- *         description: Successfully retrieved the game_has_genre
+ *         description: Successfully retrieved the game has genre
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 id:
+ *                   type: integer
+ *                 game_id:
+ *                   type: integer
+ *                 genre_id:
+ *                   type: integer
  *       400:
  *         description: Bad request
  *       404:
- *         description: game_has_genre not found
+ *         description: users not found
  *       500:
  *         description: Internal server error
  */
@@ -150,17 +179,16 @@ router.get('/:id', auth, async (req, res) => {
  * /api/games_has_genres/{id}:
  *   put:
  *     tags:
- *       - GameHasGenres
- *     summary: Edit a game_has_genre
- *     description: Edit a game_has_genre by its ID.
+ *       - GamesHasGenres
+ *     summary: Edit a game has genre
+ *     description: Edit a game has genre by its ID
  *     parameters:
  *       - in: path
  *         name: id
- *         required: true
  *         schema:
- *           type: string
- *         description: The ID of the game_has_genre
- *         example: 1
+ *           type: integer
+ *           minimum: 1
+ *         description: The id of the game has genre to update
  *     requestBody:
  *       required: true
  *       content:
@@ -176,14 +204,25 @@ router.get('/:id', auth, async (req, res) => {
  *                 example: 1
  *               genre_id:
  *                 type: integer
- *                 exemple: 3
+ *                 example: 1
  *     responses:
  *       200:
- *         description: Successfully edited the game_has_genre
+ *         description: Successfully edited the game has genre
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 id:
+ *                   type: integer
+ *                 game_id:
+ *                   type: integer
+ *                 genre_id:
+ *                   type: integer
  *       400:
  *         description: Bad request
  *       404:
- *         description: game_has_genre not found
+ *         description: users not found
  *       500:
  *         description: Internal server error
  */
@@ -205,27 +244,27 @@ router.put('/:id', auth, async (req, res) => {
 
 /**
  * @swagger
- * /api/genres/{id}:
+ * /api/games_has_genres/{id}:
  *   delete:
  *     tags:
- *       - GameHasGenres
- *     summary: Delete a game_has_genre
- *     description: Delete a specific game_has_genre by its ID.
+ *       - GamesHasGenres
+ *     summary: Delete a game has genre
+ *     description: Delete a specific game has genre by its ID
  *     parameters:
  *       - in: path
  *         name: id
  *         required: true
  *         schema:
  *           type: string
- *         description: The ID of the game_has_genre
+ *         description: The ID of the game has genre
  *         example: 1
  *     responses:
- *       200:
- *         description: game_has_genre deleted successfully
+ *       204:
+ *         description: game has genre deleted successfully
  *       400:
  *         description: Bad request
  *       404:
- *         description: game_has_genre not found
+ *         description: game has genre not found
  *       500:
  *         description: Internal server error
  */
@@ -236,7 +275,7 @@ router.delete('/:id', auth, async (req, res) => {
         return;
     }
     let response = await CRUD.deleteFromEntity("games_has_genres", id)
-    res.status(200).json(response)
+    res.status(204).json(response)
 })
 
 

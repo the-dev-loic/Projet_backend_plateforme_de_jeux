@@ -1,96 +1,93 @@
 /***********************************************************************************************************************
- * Program name :           routes/users.js
- * Description :            API off the table users
+ * Program name :           publishers.js
+ * Description :            route for publishers table
  * Author :                 Gatien Clerc
- * Creation date :          11.03.2026
- * Modified by :            Thierry Perroud
- * Modification date :      25.03.2026
- * Version :                0.1.7
+ * Creation date :          17.03.2026
+ * Modified by :            ---
+ * Modification date :      ---
+ * Version :                0.1.0
  **********************************************************************************************************************/
-"use strict";
 import express from 'express';
-
-import auth from "../auth/auth.js";
 import { CRUD } from "../database/database-connection.js";
 import {hashPassword} from "../functions/hash.js";
 
 const router = express.Router();
 
 /**
-* @swagger
-* /api/users:
-*   post:
-*     tags:
-*       - Users
-*     summary: Create a users
-*     description: Create a new users.
-*     requestBody:
-*       required: true
-*       content:
-*         application/json:
-*           schema:
-*             type: object
-*             required:
-*               - username
-*               - email
-*               - password
-*             properties:
-*               username:
-*                 type: string
-*                 example: john doe
-*               email:
-*                 type: string
-*                 example: john.doe@exemple.com
-*               password:
-*                 type: string
-*                 example: Pa$$w0rd
-*     responses:
-*       201:
-*         description: users created successfully
-*         content:
-*           application/json:
-*             schema:
-*               type: object
-*               properties:
-*                 id:
-*                   type: integer
-*                 username:
-*                   type: integer
-*                 email:
-*                   type: string
-*                 password:
-*                   type: string
-*       400:
-*         description: Bad request
-*       500:
-*         description: Internal server error
-*/
-router.post('/', auth, async (req, res) => {
+ * @swagger
+ * /api/publishers:
+ *   post:
+ *     tags:
+ *       - Publishers
+ *     summary: Create a publisher
+ *     description: Create a new publisher.
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             required:
+ *               - username
+ *               - email
+ *               - password
+ *             properties:
+ *               username:
+ *                 type: string
+ *                 example: john doe
+ *               email:
+ *                 type: string
+ *                 example: john.doe@exemple.com
+ *               password:
+ *                 type: string
+ *                 example: Pa$$w0rd
+ *     responses:
+ *       201:
+ *         description: publisher created successfully
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 id:
+ *                   type: integer
+ *                 username:
+ *                   type: integer
+ *                 email:
+ *                   type: string
+ *                 password:
+ *                   type: string
+ *       400:
+ *         description: Bad request
+ *       500:
+ *         description: Internal server error
+ */
+router.post('/', async (req, res) => {
     /*if (data[0] === "" || !data[0] || data[0].length > 45) {
         res.status(400).json({error: "invalid name, name need to be under 45 characters"});
         return;
     }*/
     req.body.password = await hashPassword(req.body.password, 10);
     const data = Object.values(req.body);
-    let response = await CRUD.createInEntity("users", ['username', 'email', 'password'], data);
+    let response = await CRUD.createInEntity("publishers", ['username', 'email', 'password'], data);
     res.status(201).json(response)
 })
 
 /**
  * @swagger
- * /api/users:
+ * /api/publishers:
  *   get:
  *     tags:
- *       - Users
- *     summary: Get all users
- *     description: Retrieve a list of users.
+ *       - Publishers
+ *     summary: Get all publishers
+ *     description: Retrieve a list of publishers.
  *     parameters:
  *       - in: query
  *         name: name
  *         required: false
  *         schema:
  *           type: string
- *         description: Search users by name
+ *         description: Search publishers by name
  *         example: one
  *       - in: query
  *         name: limit
@@ -123,7 +120,7 @@ router.post('/', auth, async (req, res) => {
  *       500:
  *         description: Internal server error
  */
-router.get('/', auth, async (req, res) => {
+router.get('/', async (req, res) => {
     try {
         // Variables
         const column = req.query.column;
@@ -131,8 +128,8 @@ router.get('/', auth, async (req, res) => {
         const limit = parseInt(req.query.limit);
 
         // Reading the entries
-        const allUsers = await CRUD.getAllFromEntity("users", column, filter, limit);
-        res.status(200).json(allUsers);
+        const allPublishers = await CRUD.getAllFromEntity("publishers", column, filter, limit);
+        res.status(200).json(allPublishers);
     }
     catch (error) {
         res.status(500).json({error: error.message});
@@ -141,23 +138,23 @@ router.get('/', auth, async (req, res) => {
 
 /**
  * @swagger
- * /api/users/{id}:
+ * /api/publishers/{id}:
  *   get:
  *     tags:
- *       - Users
- *     summary: Get a single users
- *     description: Retrieve a specific users by its ID.
+ *       - Publishers
+ *     summary: Get a single publishers
+ *     description: Retrieve a specific publishers by its ID.
  *     parameters:
  *       - in: path
  *         name: id
  *         required: true
  *         schema:
  *           type: string
- *         description: The ID of the users
+ *         description: The ID of the publishers
  *         example: 1
  *     responses:
  *       200:
- *         description: Successfully retrieved the users
+ *         description: Successfully retrieved the publishers
  *         content:
  *           application/json:
  *             schema:
@@ -174,58 +171,58 @@ router.get('/', auth, async (req, res) => {
  *       400:
  *         description: Bad request
  *       404:
- *         description: users not found
+ *         description: publishers not found
  *       500:
  *         description: Internal server error
  */
-router.get('/:id', auth, async (req, res) => {
+router.get('/:id', async (req, res) => {
     const id = parseInt(req.params.id);
     if (!(id > 0)) {
         res.status(400).json({error: "id should be a positive integer"});
         return;
     }
-    let users = await CRUD.getFromEntityById("users", id);
-    res.status(200).json(users)
+    let publishers = await CRUD.getFromEntityById("publishers", id);
+    res.status(200).json(publishers)
 })
 
 /**
-* @swagger
-* /api/users/{id}:
-*   put:
-*     tags:
-*       - Users
-*     summary: Edit a users
-*     description: Edit a users by its ID.
-*     parameters:
-*       - in: path
-*         name: id
-*         schema:
-*           type: integer
-*           minimum: 1
-*         description: The id of the users to update
-*     requestBody:
-*       required: true
-*       content:
-*         application/json:
-*           schema:
-*             type: object
-*             required:
-*               - username
-*               - email
-*               - password
-*             properties:
-*               username:
-*                 type: string
-*                 example: John Doe
-*               email:
-*                 type: string
-*                 example: john.doe@exemple.com
-*               password:
-*                 type: string
-*                 example: Pa$$w0rd
-*     responses:
-*       200:
-*         description: Successfully edited the users
+ * @swagger
+ * /api/publishers/{id}:
+ *   put:
+ *     tags:
+ *       - Publishers
+ *     summary: Edit a publishers
+ *     description: Edit a publishers by its ID.
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         schema:
+ *           type: integer
+ *           minimum: 1
+ *         description: The id of the publishers to update
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             required:
+ *               - username
+ *               - email
+ *               - password
+ *             properties:
+ *               username:
+ *                 type: string
+ *                 example: John Doe
+ *               email:
+ *                 type: string
+ *                 example: john.doe@exemple.com
+ *               password:
+ *                 type: string
+ *                 example: Pa$$w0rd
+ *     responses:
+ *       200:
+ *         description: Successfully edited the publishers
  *         content:
  *           application/json:
  *             schema:
@@ -239,64 +236,62 @@ router.get('/:id', auth, async (req, res) => {
  *                   type: string
  *                 password:
  *                   type: string
-*       400:
-*         description: Bad request
-*       404:
-*         description: users not found
-*       500:
-*         description: Internal server error
-*/
-router.put('/:id', auth, async (req, res) => {
-    res.json(req.body);
-    /*
-    if (data[0] === "" || data[0].length > 45) {
+ *       400:
+ *         description: Bad request
+ *       404:
+ *         description: publishers not found
+ *       500:
+ *         description: Internal server error
+ */
+router.put('/:id', async (req, res) => {
+    /*if (data[0] === "" || data[0].length > 45) {
         res.status(400).json({error: "invalid name, name need to be under 45 characters"});
         return;
     }
-    const id = parseInt(req.params.id);
     if (!(id > 0)) {
         res.status(400).json({error: "id should be a positive integer"});
         return;
     }*/
+    const id = parseInt(req.params.id);
     req.body.password = await hashPassword(req.body.password, 10);
     const data = Object.values(req.body);
-    let response = await CRUD.updateInEntity("users", id,['username', 'email', 'password'], data)
+    let response = await CRUD.updateInEntity("publishers", id,['username', 'email', 'password'], data)
     res.status(200).json(response)
 })
 
 /**
  *  @swagger
- *  /api/users/{id}:
+ *  /api/publishers/{id}:
  *    delete:
  *       tags:
- *         - Users
- *       summary: Delete a users
- *       description: Delete a specific users by its ID.
+ *         - Publishers
+ *       summary: Delete a publishers
+ *       description: Delete a specific publishers by its ID.
  *       parameters:
  *         - in: path
  *           name: id
  *           required: true
  *           schema:
  *             type: string
- *           description: The ID of the users
+ *           description: The ID of the publishers
  *           example: 1
  *       responses:
  *         204:
- *           description: users deleted successfully
+ *           description: publishers deleted successfully
  *         400:
  *           description: Bad request
  *         404:
- *           description: users not found
+ *           description: publishers not found
  *         500:
  *           description: Internal server error
  */
-router.delete('/:id', auth, async (req, res) => {
+router.delete('/:id', async (req, res) => {
     const id = parseInt(req.params.id);
     if (!(id > 0)) {
         res.status(400).json({error: "id should be a positive integer"});
         return;
     }
-    let response = await CRUD.deleteFromEntity("users", id)
+    let response = await CRUD.deleteFromEntity("publishers", id)
     res.status(204).json(response)
 })
 

@@ -141,7 +141,7 @@ dlcsRouter.post("/", auth, async (req, res) => {
  *           type: integer
  *         description: Maximum number of results (optional)
  *     responses:
- *       200:
+ *       201:
  *         description: List of all DLCs
  *         content:
  *           application/json:
@@ -158,6 +158,8 @@ dlcsRouter.post("/", auth, async (req, res) => {
  *                   type: string
  *                 price:
  *                   type: number
+ *       400:
+ *         description: Bad request
  *       500:
  *         description: Internal server error.
  */
@@ -268,7 +270,7 @@ dlcsRouter.get("/:id", auth, async (req, res) => {
  *               - price
  *             properties:
  *               game_id:
- *                 type: int
+ *                 type: integer
  *                 example: 1
  *               name:
  *                 type: string
@@ -299,6 +301,8 @@ dlcsRouter.get("/:id", auth, async (req, res) => {
  *                   type: number
  *       400:
  *         description: The id must be a positive integer. | At least one mandatory parameter is empty. | The id of the game must be a positive integer. | The name of the DLC cannot be longer than 100 characters. | The description of the DLC cannot be longer than 255 characters. | The price of the DLC must be a positive number, or zero.
+ *       404:
+ *         description: users not found
  *       500:
  *         description: Internal server error.
  */
@@ -365,7 +369,11 @@ dlcsRouter.put("/:id", auth, async (req, res) => {
  *       204:
  *         description: DLC deleted successfully
  *       400:
- *         description: The id must be a positive integer.
+ *         description: Bad request
+ *       404:
+ *         description: dlc not found
+ *       500:
+ *         description: Internal server error
  */
 dlcsRouter.delete("/:id", auth, async (req, res) => {
     try {
