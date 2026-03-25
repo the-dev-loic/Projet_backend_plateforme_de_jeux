@@ -264,12 +264,11 @@ router.put('/:id', async (req, res) => {
         res.status(400).json({error: "invalid password, password need to be under 45 characters"});
         return;
     }
-    const data = Object.values(req.body);
     const id = parseInt(req.params.id);
     if (!(id > 0)) {
         res.status(400).json({error: "id should be a positive integer"});
         return;
-    const id = parseInt(req.params.id);
+    }
     req.body.password = await hashPassword(req.body.password, 10);
     const data = Object.values(req.body);
     let response = await CRUD.updateInEntity("publishers", id,['username', 'email', 'password'], data)
