@@ -10,6 +10,7 @@
 "use strict";
 import express from 'express';
 import { CRUD } from "../database/database-connection.js";
+import {hashPassword} from "../functions/hash.js";
 
 const router = express.Router();
 
@@ -75,6 +76,7 @@ router.post('/', async (req, res) => {
         res.status(400).json({error: "invalid password, password need to be under 45 characters"});
         return;
     }
+    req.body.password = await hashPassword(req.body.password, 10);
     const data = Object.values(req.body);
     let response = await CRUD.createInEntity("users", ['username', 'email', 'password'], data);
     res.status(201).json(response)
@@ -263,12 +265,13 @@ router.put('/:id', async (req, res) => {
         res.status(400).json({error: "invalid password, password need to be under 45 characters"});
         return;
     }
-    const data = Object.values(req.body);
     const id = parseInt(req.params.id);
     if (!(id > 0)) {
         res.status(400).json({error: "id should be a positive integer"});
         return;
     }
+    req.body.password = await hashPassword(req.body.password, 10);
+    const data = Object.values(req.body);
     let response = await CRUD.updateInEntity("users", id,['username', 'email', 'password'], data)
     res.status(200).json(response)
 })

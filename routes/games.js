@@ -28,8 +28,8 @@ const gamesRouter = express.Router();  // Router for http://localhost:3000/api/G
 *   post:
 *     tags:
 *       - Games
-*     summary: Crée un jeu
-*     description: Crée un nouveau jeu dans la base de données
+*     summary: Create a game
+*     description: Create a new game in the db
 *     requestBody:
 *       required: true
 *       content:
@@ -55,7 +55,7 @@ const gamesRouter = express.Router();  // Router for http://localhost:3000/api/G
 *                 example: 15.00
 *     responses:
 *       201:
-*         description: La nouveau jeu a été crée
+*         description: new game created
 *         content:
 *           application/json:
 *             schema:
@@ -72,7 +72,7 @@ const gamesRouter = express.Router();  // Router for http://localhost:3000/api/G
 *                 price:
 *                   type: number
 *       400:
-*         description: Un ou plusieurs paramètres indispensables sont vides. | L'id de l'éditeur doit être un nombre entier positif. | Le nom du jeu ne peut pas dépasser 100 caractères. | la description du jeu ne doit pas dépasser les 255 caractères. | Le prix du jeu doit être un nombre positif.
+*         description: Bad request
 *       500:
  *         description: Internal server error
  */
@@ -85,24 +85,24 @@ gamesRouter.post("/", async (req, res) => {
 
         // Error handling
         if (publisher_id == null || name == null || price == null) {
-            return res.status(400).json({error: "Un ou plusieurs paramètres indispensables sont vides."});
+            return res.status(400).json({error: "At least one mandatory parameter is empty."});
         }
 
         if (isNaN(publisher_id) || publisher_id < 1) {
-            return res.status(400).json({error: "L'id de l'éditeur doit être un nombre entier positif."});
+            return res.status(400).json({error: "The id of the publisher must be a positive integer."});
         }
 
         if (name.length > 100) {
-            return res.status(400).json({error: "Le nom du jeu ne peut pas dépasser 100 caractères."});
+            return res.status(400).json({error: "The name of the game cannot be longer than 100 characters."});
         }
 
         if (description.length > 255) {
-            return res.status(400).json({error: "La description du jeu ne peut pas dépasser 255 " +
-                    "caractères."});
+            return res.status(400).json({error: "The description of the DLC cannot be longer than 255 " +
+                    "characters."});
         }
 
         if (isNaN(price) || price < 0) {
-            return res.status(400).json({error: "Le prix du jeu doit être un nombre positif ou zéro."})
+            return res.status(400).json({error: "The price of the game must be a positive number, or zero."})
         }
 
         //  Creating the entry
@@ -121,30 +121,30 @@ gamesRouter.post("/", async (req, res) => {
  *   get:
  *     tags:
  *       - Games
- *     summary: Récupère tous les jeux
- *     description: Retourne la liste des jeux avec possibilité de filtrage et de limite
+ *     summary: Get all games
+ *     description: return a game list
  *     parameters:
  *       - in: query
  *         name: column
  *         schema:
  *           type: string
- *         description: La colonne à filtrer (optionnel, a besoin du filtre)
- *         exemple: name
+ *         description: the column to filter by
+ *         example: name
  *       - in: query
  *         name: filter
  *         schema:
  *           type: string
- *         description: Le filtrage à appliquer à la colonne (optionnel, a besoin de la colonne)
-*         exemple: Counter-Strike
+ *         description: the filter to search by
+ *         example: RPG
  *       - in: query
  *         name: limit
  *         schema:
  *           type: integer
- *         description: Nombre maximum de résultats (optionnel)
- *         exemple: 3
+ *         description: Max number of result
+ *         example: 10
  *     responses:
  *       200:
- *         description: Liste des jeux
+ *         description: List of game
  *         content:
  *           application/json:
  *             schema:
@@ -189,19 +189,19 @@ gamesRouter.get("/", async (req, res) => {
  *   get:
  *     tags:
  *       - Games
- *     summary: Récupère un jeu avec un id
- *     description: Retourne un jeu à partir de son id
+ *     summary: Get a game by id
+ *     description: get a game by it's id id
  *     parameters:
  *       - in: path
  *         name: id
  *         schema:
  *           type: integer
  *           minimum: 1
- *         description: L'id du jeu
+ *         description: Game id
  *         exemple: 1
  *     responses:
- *       201:
- *         description: Jeu retourné
+ *       200:
+ *         description: Game returned
  *         content:
  *           application/json:
  *             schema:
@@ -218,9 +218,9 @@ gamesRouter.get("/", async (req, res) => {
  *                 price:
  *                   type: number
  *       400:
- *         description: L'id doit être un nombre entier positif.
+ *         description: Bad request
  *       404:
- *         description: Jeu non trouvé.
+ *         description: Game not found
  *       500:
  *         description: Internal server error
  */
@@ -228,7 +228,7 @@ gamesRouter.get("/:id", async (req, res) => {
     try {
         // Handling errors with the id parameter
         if (isNaN(req.params.id) || req.params.id < 1) {
-            return res.status(400).json({error: "L'id doit être un nombre entier positif."})
+            return res.status(400).json({error: "The id must be a positive integer."})
         }
 
         // Reading the entry
@@ -254,8 +254,8 @@ gamesRouter.get("/:id", async (req, res) => {
  *   put:
  *     tags:
  *       - Games
- *     summary: Met à jour un jeu
- *     description: Met à jour un jeu en fonction de son id
+ *     summary: Update a game
+ *     description: Update a game by it's id
  *     parameters:
  *       - in: path
  *         name: id
@@ -288,7 +288,7 @@ gamesRouter.get("/:id", async (req, res) => {
  *                 example: 10.00
  *     responses:
  *       200:
- *         description: Le jeu mis à jour
+ *         description: Updated the game
  *         content:
  *           application/json:
  *             schema:
@@ -305,9 +305,9 @@ gamesRouter.get("/:id", async (req, res) => {
  *                 price:
  *                   type: number
  *       400:
- *         description: Un ou plusieurs paramètres indispensables sont vides. | L'id de l'éditeur doit être un nombre entier positif. | Le nom du jeu ne peut pas dépasser 100 caractères. | la description du jeu ne doit pas dépasser les 255 caractères. | Le prix du jeu doit être un nombre positif ou zéro.
+ *         description: Bad request
  *       404:
- *         description: users not found
+ *         description: game not found
  *       500:
  *         description: Internal server error
  */
@@ -315,7 +315,7 @@ gamesRouter.put("/:id", async (req, res) => {
     try {
         // Handling errors with the id parameter
         if (isNaN(req.params.id) || req.params.id < 1) {
-            return res.status(400).json({error: "L'id doit être un nombre entier positif."});
+            return res.status(400).json({error: "The id must be a positive integer."})
         }
 
         // Variables
@@ -325,24 +325,24 @@ gamesRouter.put("/:id", async (req, res) => {
 
         // Error handling
         if (publisher_id == null || name == null || price == null) {
-            return res.status(400).json({error: "Un ou plusieurs paramètres indispensables sont vides."});
+            return res.status(400).json({error: "At least one mandatory parameter is empty."});
         }
 
         if (isNaN(publisher_id) || publisher_id < 1) {
-            return res.status(400).json({error: "L'id de l'éditeur doit être un nombre entier positif."});
+            return res.status(400).json({error: "The id of the publisher must be a positive integer."});
         }
 
         if (name.length > 100) {
-            return res.status(400).json({error: "Le nom du jeu ne peut pas dépasser 100 caractères."});
+            return res.status(400).json({error: "The name of the game cannot be longer than 100 characters."});
         }
 
         if (description.length > 255) {
-            return res.status(400).json({error: "La description du jeu ne peut pas dépasser 255 " +
-                    "caractères."});
+            return res.status(400).json({error: "The description of the game cannot be longer than 255 " +
+                    "characters."});
         }
 
         if (isNaN(price) || price <= 0) {
-            return res.status(400).json({error: "Le prix du jeu doit être un nombre positif ou zéro."})
+            return res.status(400).json({error: "The price of the DLC must be a positive number, or zero."})
         }
 
         // Updating the entry
@@ -361,18 +361,18 @@ gamesRouter.put("/:id", async (req, res) => {
  *   delete:
  *     tags:
  *       - Games
- *     summary: Supprime un jeu
- *     description: Supprime un jeu de la base de données en fonction de son id
+ *     summary: Delete a game
+ *     description: delete a game by it's id
  *     parameters:
  *       - in: path
  *         name: id
  *         schema:
  *           type: integer
  *           minimum: 1
- *         description: L'id du jeu à supprimer
+ *         description: Game id
  *     responses:
  *       204:
- *         description: Jeu supprimé avec succès.
+ *         description: Deleted game
  *       400:
  *           description: Bad request
  *       404:
@@ -384,12 +384,12 @@ gamesRouter.delete("/:id", async (req, res) => {
     try {
         // Handling errors with the id parameter
         if (isNaN(req.params.id) || req.params.id < 1) {
-            return res.status(400).json({error: "L'id doit être un nombre entier positif."});
+            return res.status(400).json({error: "The id must be a positive integer."});
         }
 
         // Deleting the entry
         await CRUD.deleteFromEntity("games", req.params.id);
-        res.status(204).json({message: "Jeu supprimé avec succès."});
+        res.status(204).json({message: "game deleted successfully"});
     }
     catch (error) {
         res.status(500).json({error: error.message});
