@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <title>plateforme de jeu</title>
+
+    <link rel="stylesheet" href="./front/assets/css/style.css">
+
+    <!-- Vue 3 CDN -->
+    <script src="https://unpkg.com/vue@3.4.21/dist/vue.global.js"></script>
+</head>
+<body>
+<div id="app">
+    <header class="steam-header">
+        <div class="steam-logo">Plateforme de jeux</div>
+
+        <div class="steam-buttons">
+            <a href="http://localhost:3000"><button class="steam-btn">Accueil</button></a>
+            <a href="http://localhost:3000/signin"><button class="steam-btn steam-btn-blue">Se connecter</button></a>
+        </div>
+    </header>
+    <form class="steam-form" @submit.prevent="submit">
+        <h1>Se connecter</h1>
+        <label for="email">email</label>
+        <input type="text" id="email" v-model="email" required/>
+        <label for="username">Pseudo</label>
+        <input type="text" id="username" v-model="username" required/>
+        <label for="password">Mot de passe</label>
+        <input type="password" id="password" v-model="password" required/>
+        <label for="password_confirm">Confirmer de passe</label>
+        <input type="password" id="password_confirm" v-model="password_confirm" required/>
+        <button type="submit">Signup</button>
+    </form>
+</div>
+<!--JS-->
+<script src="./front/signup.js"></script>
+<script>
+    App.mount('#app');
+</script>
+</body>
+</html>

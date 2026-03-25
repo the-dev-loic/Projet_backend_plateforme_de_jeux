@@ -49,13 +49,17 @@ app.use(express.json());
 // swagger route
 app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec));
 
-// API routes
+// site routes
 app.get('/', (req, res) => {
     res.sendFile(path.join(__dirname, "index.html"));
 });
 
 app.get('/signin', (req, res) => {
     res.sendFile(path.join(__dirname, "signin.html"));
+});
+
+app.get('/signup', (req, res) => {
+    res.sendFile(path.join(__dirname, "signup.html"));
 });
 
 /***********************************************************************************************************************
