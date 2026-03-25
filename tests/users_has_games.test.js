@@ -11,18 +11,18 @@
 import app from "../app.js";
 import { testCrudRoutes } from "./helpers/crud_route_tester.js";
 
-describe("User_has_DLC routes", () => {
+describe("User_has_Game routes", () => {
 
     testCrudRoutes(
         app,
         "/api/users_has_games",
         {
             user_id: 1,
-            games_id: 2
+            game_id: 2
         },
         {
             user_id: 1,
-            games_id: 3
+            game_id: 3
         }
     );
 
