@@ -4,8 +4,8 @@
  * Author :                 Thierry Perroud
  * Creation date :          11.02.2026
  * Modified by :            Thierry Perroud
- * Modification date :      12.02.2026
- * Version :                0.1.1
+ * Modification date :      25.03.2026
+ * Version :                0.1.2
  **********************************************************************************************************************/
 "use strict";
 
@@ -13,6 +13,7 @@
  *  Imports
  **********************************************************************************************************************/
 import mysql2 from "mysql2/promise";
+import bcrypt from 'bcrypt';
 
 /***********************************************************************************************************************
  *  Variables
@@ -53,6 +54,18 @@ const CRUD = {
         return {id: result.insertId, ...rows};
     },
 
+    /* SPECIFIC TO AUTH ***********************************************************************************************/
+    createAPIUser: async (username, password) => {
+        // Hashing the password
+        const hashPwd = await bcrypt.hash(password, 10)
+
+        // Example query: INSERT INTO api_users (username, password) VALUES ("myUsername", "myHashedPassword")
+        const [result] = await connection.query(
+            `INSERT INTO api_users (username, password) VALUES (?, ?)`,
+            [username, hashPwd]);
+        return {id: result.insertId, username}
+    },
+
     /*******************************************************************************************************************
      *  Read
      ******************************************************************************************************************/
@@ -70,6 +83,14 @@ const CRUD = {
         // Example query: SELECT * FROM table WHERE id = 1
         const [row] = await connection.query(`SELECT * FROM ${table} WHERE id = ${id}`);
         return row;
+    },
+
+
+    /* SPECIFIC TO AUTH ***********************************************************************************************/
+    getAPIUser: async (login) => {
+        // Example query: SELECT * from api_users WHERE username = myUsername
+        const [row] = await connection.query(`SELECT * FROM api_users WHERE username = ?`, [login]);
+        return row[0]
     },
 
     /*******************************************************************************************************************

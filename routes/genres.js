@@ -3,12 +3,14 @@
  * Description :            route for genres table
  * Author :                 Cédric Jankiewicz
  * Creation date :          24.02.2026
- * Modified by :            Gatien Clerc
- * Modification date :      04.03.2026
- * Version :                0.1.4
+ * Modified by :            Thierry Perroud
+ * Modification date :      25.03.2026
+ * Version :                0.1.5
  **********************************************************************************************************************/
 import express from 'express';
 const router = express.Router();
+
+import auth from "../auth/auth.js";
 import { CRUD } from "../database/database-connection.js";
 
 
@@ -49,7 +51,7 @@ import { CRUD } from "../database/database-connection.js";
  *       500:
  *         description: Internal server error
  */
-router.post('/', async (req, res) => {
+router.post('/', auth, async (req, res) => {
     const data = Object.values(req.body);
     if (data[0] === "" || !data[0] || data[0].length > 45) {
         res.status(400).json({error: "invalid name, name need to be under 45 characters"});
@@ -106,7 +108,7 @@ router.post('/', async (req, res) => {
  *       500:
  *         description: Internal server error
  */
-router.get('/', async (req, res) => {
+router.get('/', auth, async (req, res) => {
     const column = req.query.column;
     const filter = req.query.filter;
     const limit = parseInt(req.query.limit);
@@ -155,7 +157,7 @@ router.get('/', async (req, res) => {
  *       500:
  *         description: Internal server error
  */
-router.get('/:id', async (req, res) => {
+router.get('/:id', auth, async (req, res) => {
     const id = parseInt(req.params.id);
     if (!(id > 0)) {
         res.status(400).json({error: "id should be a positive integer"});
@@ -212,7 +214,7 @@ router.get('/:id', async (req, res) => {
  *       500:
  *         description: Internal server error
  */
-router.put('/:id', async (req, res) => {
+router.put('/:id', auth, async (req, res) => {
     const data = Object.values(req.body);
     if (data[0] === "" || !data[0] || data[0].length > 45) {
         res.status(400).json({error: "invalid name, name need to be under 45 characters"});
@@ -263,7 +265,7 @@ router.put('/:id', async (req, res) => {
  *       500:
  *         description: Internal server error
  */
-router.delete('/:id', async (req, res) => {
+router.delete('/:id', auth, async (req, res) => {
     const id = parseInt(req.params.id);
     if (!(id > 0)) {
         res.status(400).json({error: "id should be a positive integer"});

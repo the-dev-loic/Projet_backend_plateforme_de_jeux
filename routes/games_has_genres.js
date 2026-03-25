@@ -3,12 +3,14 @@
  * Description :            route for game_has_genres table
  * Author :                 Cédric Jankiewicz
  * Creation date :          04.03.2026
- * Modified by :            Cédric Jankiewicz
- * Modification date :      04.03.2026
- * Version :                0.1.0
+ * Modified by :            Thierry Perroud
+ * Modification date :      25.03.2026
+ * Version :                0.1.1
  **********************************************************************************************************************/
 import express from 'express';
 const router = express.Router();
+
+import auth from "../auth/auth.js";
 import { CRUD } from "../database/database-connection.js";
 
 /**
@@ -54,7 +56,7 @@ import { CRUD } from "../database/database-connection.js";
  *       500:
  *         description: Internal server error
  */
-router.post('/', async (req, res) => {
+router.post('/', auth, async (req, res) => {
     if (!(req.body.game_id > 0) || !(req.body.genre_id > 0)) {
         res.status(400).json({error: "invalid data, game_id and genre_id should be a positive integer"});
         return;
@@ -110,7 +112,7 @@ router.post('/', async (req, res) => {
  *       500:
  *         description: Internal server error
  */
-router.get('/', async (req, res) => {
+router.get('/', auth, async (req, res) => {
     const column = req.query.column;
     const filter = req.query.filter;
     const limit = parseInt(req.query.limit);
@@ -161,7 +163,7 @@ router.get('/', async (req, res) => {
  *       500:
  *         description: Internal server error
  */
-router.get('/:id', async (req, res) => {
+router.get('/:id', auth, async (req, res) => {
     const id = parseInt(req.params.id);
     if (!(id > 0)) {
         res.status(400).json({error: "id should be a positive integer"});
@@ -224,7 +226,7 @@ router.get('/:id', async (req, res) => {
  *       500:
  *         description: Internal server error
  */
-router.put('/:id', async (req, res) => {
+router.put('/:id', auth, async (req, res) => {
     if (!(req.body.game_id > 0) || !(req.body.genre_id > 0)) {
         res.status(400).json({error: "invalid data, game_id and genre_id should be a positive integer"});
         return;
@@ -266,7 +268,7 @@ router.put('/:id', async (req, res) => {
  *       500:
  *         description: Internal server error
  */
-router.delete('/:id', async (req, res) => {
+router.delete('/:id', auth, async (req, res) => {
     const id = parseInt(req.params.id);
     if (!(id > 0)) {
         res.status(400).json({error: "id should be a positive integer"});

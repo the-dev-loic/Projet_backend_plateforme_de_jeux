@@ -3,9 +3,9 @@
  * Description :            router for the games CRUD routes
  * Author :                 Thierry Perroud
  * Creation date :          25.02.2026
- * Modified by :            Gatien Clerc
- * Modification date :      11.03.2026
- * Version :                0.1.6
+ * Modified by :            Thierry Perroud
+ * Modification date :      25.03.2026
+ * Version :                0.1.7
  **********************************************************************************************************************/
 "use strict";
 
@@ -13,6 +13,8 @@
  *  Imports
  **********************************************************************************************************************/
 import express from "express";
+
+import auth from "../auth/auth.js";
 import { CRUD } from "../database/database-connection.js";
 
 /***********************************************************************************************************************
@@ -76,7 +78,7 @@ const gamesRouter = express.Router();  // Router for http://localhost:3000/api/G
 *       500:
  *         description: Internal server error
  */
-gamesRouter.post("/", async (req, res) => {
+gamesRouter.post("/", auth, async (req, res) => {
     try {
         // Variables
         const columns = ["publisher_id", "name", "description", "price"];
@@ -167,7 +169,7 @@ gamesRouter.post("/", async (req, res) => {
  *       500:
  *         description: Internal server error
  */
-gamesRouter.get("/", async (req, res) => {
+gamesRouter.get("/", auth, async (req, res) => {
     try {
         // Variables
         const column = req.query.column;
@@ -224,7 +226,7 @@ gamesRouter.get("/", async (req, res) => {
  *       500:
  *         description: Internal server error
  */
-gamesRouter.get("/:id", async (req, res) => {
+gamesRouter.get("/:id", auth, async (req, res) => {
     try {
         // Handling errors with the id parameter
         if (isNaN(req.params.id) || req.params.id < 1) {
@@ -311,7 +313,7 @@ gamesRouter.get("/:id", async (req, res) => {
  *       500:
  *         description: Internal server error
  */
-gamesRouter.put("/:id", async (req, res) => {
+gamesRouter.put("/:id", auth, async (req, res) => {
     try {
         // Handling errors with the id parameter
         if (isNaN(req.params.id) || req.params.id < 1) {
@@ -380,7 +382,7 @@ gamesRouter.put("/:id", async (req, res) => {
  *       500:
  *         description: Internal server error
  */
-gamesRouter.delete("/:id", async (req, res) => {
+gamesRouter.delete("/:id", auth, async (req, res) => {
     try {
         // Handling errors with the id parameter
         if (isNaN(req.params.id) || req.params.id < 1) {
