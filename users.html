@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="fr">
+    <head>
+        <meta charset="UTF-8">
+        <title>plateforme de jeu</title>
+
+        <link rel="stylesheet" href="./front/assets/css/style.css">
+
+        <!-- Vue 3 CDN -->
+        <script src="https://unpkg.com/vue@3.4.21/dist/vue.global.js"></script>
+    </head>
+    <body>
+
+    <div id="app">
+        <header class="steam-header">
+            <div class="steam-logo">Plateforme de jeux</div>
+
+            <div class="steam-buttons">
+                <a href="http://localhost:3000/"><button class="steam-btn steam-btn-blue">Accueil</button></a>
+                <a href="http://localhost:3000/signin"><button class="steam-btn">Se connecter</button></a>
+                <a href="http://localhost:3000/signup"><button class="steam-btn steam-btn-blue">S’inscrire</button></a>
+            </div>
+        </header>
+
+        <h1>Utilisateurs & leurs jeux</h1>
+
+        <!-- Liste déroulante -->
+        <select v-model="selectedUserId" class="steam-btn">
+            <option disabled value="">-- Sélectionner un utilisateur --</option>
+            <option v-for="u in filteredUsers" :key="u.id" :value="u.id">
+                {{ u.username }}
+            </option>
+        </select>
+
+        <!-- Recherche utilisateur -->
+        <input v-model="search" class="steam-btn" placeholder="Rechercher un utilisateur...">
+
+        <h2 v-if="selectedUserName">{{ selectedUserName }} possède :</h2>
+
+        <div v-if="loading">Chargement…</div>
+        <p v-if="error" style="color:red">{{ error }}</p>
+
+        <!-- Jeux -->
+        <ul v-if="games.length > 0">
+            <li v-for="game in games" :key="game.id" class="game-card">
+                <strong>{{ game.name }}</strong> — {{ game.publisher_name }}
+                <br>
+                <small>Genres :
+                    <span v-for="g in game.genres">{{ g.name }} </span>
+                </small>
+                <br>
+                <small>DLCs du jeu :
+                    <span v-for="d in game.dlcs">{{ d.name }} </span>
+                </small>
+            </li>
+        </ul>
+
+        <!-- DLCs de l'utilisateur -->
+        <h3>DLCs possédés :</h3>
+        <ul v-if="userDlcs.length > 0">
+            <li v-for="d in userDlcs">{{ d.name }}</li>
+        </ul>
+        <p v-else>Aucun DLC.</p>
+    </div>
+
+    <!-- IMPORTANT : Charger ton script users.js -->
+    <script src="./front/users.js"></script>
+
+    <script>
+        App.mount("#app");
+    </script>
+
+    </body>
+</html>
